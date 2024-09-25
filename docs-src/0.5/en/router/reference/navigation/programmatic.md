@@ -1,37 +1,60 @@
-# Programmatic Navigation
+# 程序化导航
 
-Sometimes we want our application to navigate to another page without having the
-user click on a link. This is called programmatic navigation.
+有时我们希望应用程序在没有用户点击链接的情况下导航到另一个页面。这被称为程序化导航。
 
-## Using a Navigator
+## 使用导航器
 
-We can get a navigator with the [`navigator`] function which returns a [`Navigator`].
+我们可以使用 ``navigator`` 函数获取导航器，该函数返回一个 ``Navigator``。
 
-We can use the [`Navigator`] to trigger four different kinds of navigation:
+我们可以使用 ``Navigator`` 触发四种不同的导航类型：
 
-- `push` will navigate to the target. It works like a regular anchor tag.
-- `replace` works like `push`, except that it replaces the current history entry
-  instead of adding a new one. This means the prior page cannot be restored with the browser's back button.
-- `Go back` works like the browser's back button.
-- `Go forward` works like the browser's forward button.
+- ``push`` 将导航到目标。它的工作方式类似于常规的锚点标签。
+- ``replace`` 的工作方式类似于 ``push``，不同之处在于它替换当前的历史记录条目而不是添加新的条目。这意味着无法使用浏览器的后退按钮恢复之前的页面。
+- ``Go back`` 的工作方式类似于浏览器的后退按钮。
+- ``Go forward`` 的工作方式类似于浏览器的前进按钮。
 
 ```rust
-{{#include src/doc_examples/navigator.rs:nav}}
+use dioxus_router::prelude::*;
+
+fn main() {
+    dioxus::web::launch(App);
+}
+
+#[derive(Props)]
+struct App {
+    navigator: Navigator,
+}
+
+fn App(ctx: &Context, props: &App) -> Element {
+    let navigator = props.navigator.clone();
+    ctx.render(rsx! {
+        // ...
+        button {
+            onclick: move |_| {
+                navigator.push("/home");
+            }
+            "Go to Home"
+        }
+        button {
+            onclick: move |_| {
+                navigator.replace("/about");
+            }
+            "Replace with About"
+        }
+        // ...
+    })
+}
 ```
 
-You might have noticed that, like [`Link`], the [`Navigator`]s `push` and
-`replace` functions take a [`NavigationTarget`]. This means we can use either
-`Internal`, or `External` targets.
+您可能已经注意到，与 ``Link`` 一样，``Navigator`` 的 ``push`` 和 ``replace`` 函数接受一个 ``NavigationTarget``. 这意味着我们可以使用 ``Internal`` 或 ``External`` 目标。
 
-## External Navigation Targets
+## 外部导航目标
 
-Unlike a [`Link`], the [`Navigator`] cannot rely on the browser (or webview) to
-handle navigation to external targets via a generated anchor element.
+与 ``Link`` 不同，``Navigator`` 无法依赖浏览器（或 Webview）通过生成的锚点元素来处理外部目标的导航。
 
-This means, that under certain conditions, navigation to external targets can
-fail.
+这意味着，在某些情况下，外部目标的导航可能会失败。
 
 
-[`Link`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html
-[`NavigationTarget`]: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html
-[`Navigator`]: https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html
+``Link``: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html
+``NavigationTarget``: https://docs.rs/dioxus-router/latest/dioxus_router/navigation/enum.NavigationTarget.html
+``Navigator``: https://docs.rs/dioxus-router/latest/dioxus_router/prelude/struct.Navigator.html

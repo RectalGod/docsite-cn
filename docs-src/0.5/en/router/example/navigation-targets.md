@@ -1,22 +1,21 @@
-# Navigation Targets
+# 导航目标
 
-In the previous chapter, we learned how to create links to pages within our app.
-We told them where to go using the `target` property. This property takes something that can be converted to a [`NavigationTarget`].
+在上一章中，我们学习了如何在应用内创建指向页面的链接。
+我们使用 `target` 属性告诉它们去哪里。此属性接受可以转换为 [`NavigationTarget`] 的内容。
 
-## What is a navigation target?
+## 什么是导航目标？
 
-A [`NavigationTarget`] is similar to the `href` of an HTML anchor element. It
-tells the router where to navigate to. The Dioxus Router knows two kinds of
-navigation targets:
+[`NavigationTarget`] 类似于 HTML 锚元素的 `href`。它
+告诉路由器导航到哪里。Dioxus 路由器知道两种类型的
+导航目标：
 
-- [`Internal`]: We used internal links in the previous chapter. It's a link to a page within our
-  app represented as a Route enum.
-- [`External`]: This works exactly like an HTML anchors' `href`. Don't use this for in-app
-  navigation as it will trigger a page reload by the browser.
+- [`Internal`]: 我们在上一章中使用过内部链接。它是指向应用内页面的链接，表示为 Route 枚举。
+- [`External`]: 这与 HTML 锚点的 `href` 类似。不要将它用于应用内
+  导航，因为它会触发浏览器重新加载页面。
 
-## External navigation
+## 外部导航
 
-If we need a link to an external page we can do it like this:
+如果我们需要链接到外部页面，我们可以像这样操作：
 
 ```rust
 {{#include src/doc_examples/external_link.rs:component}}

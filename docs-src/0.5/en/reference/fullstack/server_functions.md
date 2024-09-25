@@ -1,57 +1,57 @@
-# Communicating with the server
+# 与服务器通信
 
-`dioxus-fullstack` provides server functions that allow you to call an automatically generated API on the server from the client as if it were a local function.
+`dioxus-fullstack` 提供了服务器函数，允许您从客户端调用服务器上的自动生成的 API，就像调用本地函数一样。
 
-To make a server function, simply add the `#[server(YourUniqueType)]` attribute to a function. The function must:
+要创建服务器函数，只需在函数上添加 `#[server(YourUniqueType)]` 属性。该函数必须：
 
-- Be an async function
-- Have arguments and a return type that both implement serialize and deserialize (with [serde](https://serde.rs/)).
-- Return a `Result` with an error type of ServerFnError
+- 是一个异步函数
+- 拥有参数和返回值，两者都实现序列化和反序列化（使用 [serde](https://serde.rs/)）。
+- 返回一个 `Result`，其错误类型为 ServerFnError
 
-You must call `register` on the type you passed into the server macro in your main function before starting your server to tell Dioxus about the server function.
+您必须在主函数中将 `register` 调用传递给服务器宏的类型，然后启动服务器，以告知 Dioxus 有关服务器函数的信息。
 
-Let's continue building on the app we made in the [getting started](../../getting_started/fullstack.md) guide. We will add a server function to our app that allows us to double the count on the server.
+让我们继续构建在 [getting started](../../getting_started/fullstack.md) 指南中创建的应用程序。我们将向应用程序添加一个服务器函数，该函数允许我们在服务器上将计数加倍。
 
-First, add serde as a dependency:
+首先，添加 serde 作为依赖项：
 
 ```shell
 cargo add serde
 ```
 
-Next, add the server function to your `main.rs`:
+接下来，将服务器函数添加到您的 `main.rs` 中：
 
 ```rust
 {{#include src/doc_examples/server_function.rs}}
 ```
 
-Now, build your client-side bundle with `dx build --features web` and run your server with `cargo run --features ssr`. You should see a new button that multiplies the count by 2.
+现在，使用 `dx build --features web` 构建您的客户端捆绑包，并使用 `cargo run --features ssr` 运行您的服务器。您应该会看到一个新按钮，它将计数乘以 2。
 
-## Cached data fetching
+## 缓存数据获取
 
-One common use case for server functions is fetching data from the server:
+服务器函数的一个常见用例是从服务器获取数据：
 
 ```rust
 {{#include src/doc_examples/server_data_fetch.rs}}
 ```
 
-If you navigate to the site above, you will first see `server data is None`, then after the `WASM` has loaded and the request to the server has finished, you will see `server data is Some(Ok("Hello from the server!"))`.
+如果您导航到上面的站点，您将首先看到 `server data is None`，然后在 `WASM` 加载完毕并且对服务器的请求完成之后，您将看到 `server data is Some(Ok("Hello from the server!"))`。
 
 
-This approach works, but it can be slow. Instead of waiting for the client to load and send a request to the server, what if we could get all of the data we needed for the page on the server and send it down to the client with the initial HTML page?
+这种方法有效，但速度可能很慢。与其等待客户端加载并向服务器发送请求，不如我们在服务器上获取页面所需的所有数据，并将这些数据与初始 HTML 页面一起发送到客户端？
 
 
-This is exactly what the `use_server_future` hook allows us to do! `use_server_future` is similar to the `use_resource` hook, but it allows you to wait for a future on the server and send the result of the future down to the client.
+这正是 `use_server_future` 钩子允许我们做的事情！`use_server_future` 类似于 `use_resource` 钩子，但它允许您在服务器上等待一个 future，并将 future 的结果发送到客户端。
 
 
-Let's change our data fetching to use `use_server_future`:
+让我们将数据获取更改为使用 `use_server_future`：
 
 ```rust
 {{#include src/doc_examples/server_data_prefetch.rs}}
 ```
 
-> Notice the `?` after `use_server_future`. This is what tells Dioxus fullstack to wait for the future to resolve before continuing rendering. If you want to not wait for a specific future, you can just remove the ? and deal with the `Option` manually.
+> 注意 `?` 在 `use_server_future` 之后。这告诉 Dioxus 全栈在继续渲染之前等待 future 解析。如果您不想等待特定的 future，可以简单地删除 ? 并手动处理 `Option`。
 
-Now when you load the page, you should see `server data is Ok("Hello from the server!")`. No need to wait for the `WASM` to load or wait for the request to finish!
+现在当您加载页面时，您应该会看到 `server data is Ok("Hello from the server!")`。无需等待 `WASM` 加载或等待请求完成！
 
 ```inject-dioxus
 SandBoxFrame {
@@ -60,49 +60,49 @@ SandBoxFrame {
 ```
 
 
-## Running the client with dioxus-desktop
+## 使用 dioxus-desktop 运行客户端
 
-The project presented so far makes a web browser interact with the server, but it is also possible to make a desktop program interact with the server in a similar fashion. (The full example code is available in the [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/main/packages/fullstack/examples/axum-desktop))
+到目前为止，所呈现的项目使 Web 浏览器与服务器交互，但也可以使桌面程序以类似的方式与服务器交互。（完整的示例代码可在 [Dioxus repo](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/fullstack/examples/axum-desktop) 中找到）
 
-First, we need to make two binary targets, one for the desktop program (the `client.rs` file), one for the server (the `server.rs` file). The client app and the server functions are written in a shared `lib.rs` file.
+首先，我们需要创建两个二进制目标，一个用于桌面程序（`client.rs` 文件），一个用于服务器（`server.rs` 文件）。客户端应用程序和服务器函数在共享的 `lib.rs` 文件中编写。
 
-The desktop and server targets have slightly different build configuration to enable additional dependencies or features. 
-The Cargo.toml in the full example has more information, but the main points are:
-- the client.rs has to be run with the `desktop` feature, so that the optional `dioxus-desktop` dependency is included
-- the server.rs has to be run with the `ssr` features; this will generate the server part of the server functions and will run our backend server.
+桌面和服务器目标具有略微不同的构建配置，以启用额外的依赖项或功能。
+完整示例中的 Cargo.toml 包含更多信息，但主要要点是：
+- client.rs 必须使用 `desktop` 功能运行，以便包含可选的 `dioxus-desktop` 依赖项
+- server.rs 必须使用 `ssr` 功能运行；这将生成服务器函数的服务器部分，并将运行我们的后端服务器。
 
-Once you create your project, you can run the server executable with:
+创建项目后，可以使用以下命令运行服务器可执行文件：
 ```bash
 cargo run --bin server --features ssr
 ```
-and the client desktop executable with:
+并使用以下命令运行客户端桌面可执行文件：
 ```bash
 cargo run --bin client --features desktop
 ```
 
-### Client code
+### 客户端代码
 
-The client file is pretty straightforward. You only need to set the server url in the client code, so it knows where to send the network requests. Then, dioxus_desktop launches the app.
+客户端文件非常简单。您只需要在客户端代码中设置服务器 URL，以便它知道将网络请求发送到哪里。然后，dioxus_desktop 启动应用程序。
 
-For development, the example project runs the server on `localhost:8080`. **Before you release remember to update the url to your production url.**
+在开发过程中，示例项目在 `localhost:8080` 上运行服务器。**在发布之前，请务必将 URL 更新为您的生产 URL。**
 
 
-### Server code
+### 服务器代码
 
-In the server code, first you have to set the network address and port where the server will listen to.
+在服务器代码中，首先您需要设置服务器将监听的网络地址和端口。
 ```rust
 {{#include src/doc_examples/server_function_desktop_client.rs:server_url}}
 ```
 
-Then, you have to register the types declared in the server function macros into the server.
-For example, consider this server function:
+然后，您需要将服务器函数宏中声明的类型注册到服务器中。
+例如，考虑以下服务器函数：
 ```rust
 {{#include src/doc_examples/server_function_desktop_client.rs:server_function}}
 ```
 
-The `GetServerData` type has to be registered in the server, which will add the corresponding route to the server.
+`GetServerData` 类型必须在服务器中注册，这将向服务器添加相应的路由。
 ```rust
 {{#include src/doc_examples/server_function_desktop_client.rs:function_registration}}
 ```
 
-Finally, the server is started and it begins responding to requests.
+最后，服务器启动并开始响应请求。

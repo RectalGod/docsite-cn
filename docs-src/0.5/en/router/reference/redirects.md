@@ -1,12 +1,10 @@
-# Redirects
+# 重定向
 
-In some cases, we may want to redirect our users to another page whenever they
-open a specific path. We can tell the router to do this with the `#[redirect]`
-attribute.
+在某些情况下，我们可能希望在用户打开特定路径时将他们重定向到另一个页面。我们可以使用 `#[redirect]` 属性告诉路由器这样做。
 
-The `#[redirect]` attribute accepts a route and a closure with all of the parameters defined in the route. The closure must return a [`NavigationTarget`].
+`#[redirect]` 属性接受一个路由和一个闭包，其中包含路由中定义的所有参数。闭包必须返回一个 [`NavigationTarget`]。
 
-In the following example, we will redirect everybody from `/myblog` and `/myblog/:id` to `/blog` and `/blog/:id` respectively
+在以下示例中，我们将分别从 `/myblog` 和 `/myblog/:id` 重定向所有人到 `/blog` 和 `/blog/:id`
 
 ```rust
 {{#include src/doc_examples/full_example.rs:router}}

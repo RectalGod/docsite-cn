@@ -1,14 +1,14 @@
-# How to Upgrade to Dioxus 0.5
+# 如何升级到 Dioxus 0.5
 
-This guide will outline the API changes between the `0.4` and `0.5` releases. 
+本指南将概述 `0.4` 和 `0.5` 版本之间的 API 变化。
 
-`0.5` has includes significant changes to hooks, props, and global state.
+`0.5` 包含对钩子、道具和全局状态的重大更改。
 
-## Cheat Sheet
+## 快速参考
 
-Here is a quick cheat sheet for the changes:
+以下是更改的快速参考：
 
-### Scope
+### 范围
 
 Dioxus 0.4:
 ```rust
@@ -32,7 +32,7 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:scope}}
 ```
 
-### Props
+### 道具
 
 Dioxus 0.4:
 ```rust
@@ -76,7 +76,7 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:props}}
 ```
 
-You can read more about the new props API in the [Props Migration](props.md) guide.
+您可以在 [Props Migration](props.md) 指南中了解更多关于新道具 API 的信息。
 
 ### Futures
 
@@ -91,9 +91,9 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:futures}}
 ```
 
-Read more about the `use_resource` hook in the [Hook Migration](hooks.md) guide.
+在 [Hook Migration](hooks.md) 指南中阅读有关 `use_resource` 钩子的更多信息。
 
-### State Hooks
+### 状态钩子
 
 Dioxus 0.4:
 ```rust
@@ -127,7 +127,7 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:state}}
 ```
 
-Read more about the `use_signal` hook in the [State Migration](state.md) guide.
+在 [State Migration](state.md) 指南中阅读有关 `use_signal` 钩子的更多信息。
 
 ### Fermi
 
@@ -191,4 +191,4 @@ Dioxus 0.5:
 {{#include src/doc_examples/migration.rs:fermi}}
 ```
 
-You can read more about global signals in the [Fermi migration guide](fermi.md).
+您可以在 [Fermi migration guide](fermi.md) 中阅读有关全局信号的更多信息。

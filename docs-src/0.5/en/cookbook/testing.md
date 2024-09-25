@@ -1,31 +1,30 @@
-# Testing
+# 测试
 
-When building application or libraries with Dioxus, you may want to include some tests to check the behavior of parts of your application. This guide will teach you how to test different parts of your Dioxus application.
+在使用 Dioxus 构建应用程序或库时，您可能希望包含一些测试来检查应用程序部分的行为。本指南将教您如何测试 Dioxus 应用程序的不同部分。
 
-## Component Testing
+## 组件测试
 
-You can use a combination of [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) and [dioxus-ssr]() to check that two snippets of rsx are equal:
+您可以结合使用 [pretty-assertions](https://docs.rs/pretty_assertions/latest/pretty_assertions/) 和 [dioxus-ssr]() 来检查两个 rsx 片段是否相等：
 
 ```rust
 {{#include src/doc_examples/component_test.rs}}
 ```
 
-## Hook Testing
+## Hook 测试
 
-When creating libraries around Dioxus, it can be helpful to make tests for your [custom hooks](./state/custom_hooks/index.md).
+在围绕 Dioxus 创建库时，为您的 [custom hooks](./state/custom_hooks/index.md) 进行测试可能会有所帮助。
 
-
-Dioxus does not currently have a full hook testing library, but you can build a bespoke testing framework by manually driving the virtual dom.
+Dioxus 目前还没有完整的 Hook 测试库，但您可以通过手动驱动虚拟 DOM 来构建一个定制的测试框架。
 
 ```rust
 {{#include src/doc_examples/hook_test.rs}}
 ```
 
-## End to End Testing
+## 端到端测试
 
-You can use [Playwright](https://playwright.dev/) to create end to end tests for your dioxus application.
+您可以使用 [Playwright](https://playwright.dev/) 为您的 Dioxus 应用程序创建端到端测试。
 
-In your `playwright.config.js`, you will need to run cargo run or dx serve instead of the default build command. Here is a snippet from the end to end web example:
+在您的 `playwright.config.js` 中，您需要运行 `cargo run` 或 `dx serve` 而不是默认的构建命令。以下是一段来自端到端 Web 示例的代码片段：
 
 ```js
 //...
@@ -41,6 +40,6 @@ webServer: [
 ],
 ```
 
-- [Web example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/web)
-- [Liveview example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/liveview)
-- [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/main/playwright-tests/fullstack)
+- [Web example](https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/web)
+- [Liveview example](https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/liveview)
+- [Fullstack example](https://github.com/DioxusLabs/dioxus/tree/v0.5/playwright-tests/fullstack)

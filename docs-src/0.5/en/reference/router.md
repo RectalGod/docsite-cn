@@ -1,58 +1,58 @@
-# Router
+# 路由
 
-In many of your apps, you'll want to have different "scenes". For a webpage, these scenes might be the different webpages with their own content. For a desktop app, these scenes might be different views in your app.
+在许多应用程序中，你可能需要不同的“场景”。对于网页来说，这些场景可能是包含不同内容的不同网页。对于桌面应用程序来说，这些场景可能是应用程序中的不同视图。
 
-To unify these platforms, Dioxus provides a first-party solution for scene management called Dioxus Router.
+为了统一这些平台，Dioxus 提供了一个名为 Dioxus Router 的内置场景管理解决方案。
 
 
-## What is it?
+## 它是什么？
 
-For an app like the Dioxus landing page (https://dioxuslabs.com), we want to have several different scenes:
+对于像 Dioxus 着陆页（https://dioxuslabs.com）这样的应用程序，我们希望有几个不同的场景：
 
-- Homepage
-- Blog
+- 首页
+- 博客
 
-Each of these scenes is independent – we don't want to render both the homepage and blog at the same time.
+每个场景都是独立的——我们不希望同时渲染首页和博客。
 
-The Dioxus router makes it easy to create these scenes. To make sure we're using the router, add the `router` feature to your `dioxus` dependency:
+Dioxus 路由器使创建这些场景变得容易。为了确保我们正在使用路由器，请将 `router` 特性添加到你的 `dioxus` 依赖项中：
 
 ```shell
 cargo add dioxus@0.5.0 --features router
 ```
 
 
-## Using the router
+## 使用路由器
 
-Unlike other routers in the Rust ecosystem, our router is built declaratively at compile time. This makes it possible to compose our app layout simply by defining an enum.
+与 Rust 生态系统中的其他路由器不同，我们的路由器是在编译时声明式构建的。这使得通过定义一个枚举来组合应用程序布局成为可能。
 
 ```rust
 {{#include src/doc_examples/router_reference.rs:router_definition}}
 ```
 
-Whenever we visit this app, we will get either the Home component or the Blog component rendered depending on which route we enter at. If neither of these routes match the current location, then nothing will render.
+无论何时访问此应用程序，我们都会根据我们输入的路由渲染 Home 组件或 Blog 组件。如果这些路由都不匹配当前位置，则不会渲染任何内容。
 
-We can fix this one of two ways:
+我们可以通过两种方式之一解决这个问题：
 
-- A fallback 404 page
+- 一个回退的 404 页面
 
 ```rust
 {{#include src/doc_examples/router_reference.rs:router_definition_404}}
 ```
 
-- Redirect 404 to home
+- 将 404 重定向到首页
 
 ```rust
 {{#include src/doc_examples/router_reference.rs:router_404_redirect}}
 ```
 
-## Links
+## 链接
 
-For our app to navigate these routes, we can provide clickable elements called Links. These simply wrap `<a>` elements that, when clicked, navigate the app to the given location. Because our route is an enum of valid routes, if you try to link to a page that doesn't exist, you will get a compiler error.
+为了让我们的应用程序导航这些路由，我们可以提供名为链接的可点击元素。这些元素只是简单地包装了 `<a>` 元素，当点击这些元素时，会将应用程序导航到给定位置。因为我们的路由是有效路由的枚举，所以如果你尝试链接到不存在的页面，你将收到编译器错误。
 
 ```rust
 {{#include src/doc_examples/router_reference.rs:links}}
 ```
 
-## More reading
+## 更多阅读
 
-This page is just a very brief overview of the router. For more information, check out the [router book](../router/index.md) or some of the [router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).
+此页面只是对路由器的简要概述。有关更多信息，请查看 [router book](../router/index.md) 或一些 [router examples](https://github.com/DioxusLabs/dioxus/blob/master/examples/router.rs).

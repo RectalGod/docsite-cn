@@ -1,65 +1,174 @@
-# Defining Routes
+# 定义路由
 
-When creating a [`Routable`] enum, we can define routes for our application using the `route("path")` attribute.
+在创建 `Routable`] 枚举时，我们可以使用 `route("path")` 属性为我们的应用程序定义路由。
 
-## Route Segments
+## 路由段
 
-Each route is made up of segments. Most segments are separated by `/` characters in the path.
+每个路由都由段组成。大多数段在路径中由 `/` 字符分隔。
 
-There are four fundamental types of segments:
+有四种基本的段类型：
 
-1. [Static segments](#static-segments) are fixed strings that must be present in the path.
-2. [Dynamic segments](#dynamic-segments) are types that can be parsed from a segment.
-3. [Catch-all segments](#catch-all-segments) are types that can be parsed from multiple segments.
-4. [Query segments](#query-segments) are types that can be parsed from the query string.
+1. [Static segments](#static-segments) 是必须出现在路径中的固定字符串。
+2. [Dynamic segments](#dynamic-segments) 是可以从一个段中解析的类型。
+3. [Catch-all segments](#catch-all-segments) 是可以从多个段中解析的类型。
+4. [Query segments](#query-segments) 是可以从查询字符串中解析的类型。
 
-Routes are matched:
+路由匹配：
 
-- First, from most specific to least specific (Static then Dynamic then Catch All) (Query is always matched)
-- Then, if multiple routes match the same path, the order in which they are defined in the enum is followed.
+- 首先，从最具体到最不具体（静态、然后动态、然后通配符）（查询始终匹配）
+- 然后，如果多个路由匹配同一条路径，则按照它们在枚举中定义的顺序进行匹配。
 
-## Static segments
+## 静态段
 
-Fixed routes match a specific path. For example, the route `#[route("/about")]` will match the path `/about`.
+固定路由匹配特定的路径。例如，路由 `#[route("/about")]` 将匹配路径 `/about`.
 
 ```rust
 {{#include src/doc_examples/static_segments.rs:route}}
 ```
 
-## Dynamic Segments
+```rust
+use axum::{routing::get, Router};
 
-Dynamic segments are in the form of `:name` where `name` is
-the name of the field in the route variant. If the segment is parsed
-successfully then the route matches, otherwise the matching continues.
+#[derive(Debug, Clone, Copy)]
+enum Routes {
+    Static,
+}
 
-The segment can be of any type that implements `FromStr`.
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route("/", get(handler))
+        .route("/users", get(handler));
+
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+
+async fn handler() {
+    // ...
+}
+```
+
+## 动态段
+
+动态段的形式为 `:name`，其中 `name` 是路由变体中字段的名称。如果段成功解析，则路由匹配，否则匹配继续。
+
+段可以是任何实现 `FromStr` 的类型。
 
 ```rust
 {{#include src/doc_examples/dynamic_segments.rs:route}}
 ```
 
-## Catch All Segments
+```rust
+use axum::{routing::get, Router};
+use std::str::FromStr;
 
-Catch All segments are in the form of `:..name` where `name` is the name of the field in the route variant. If the segments are parsed successfully then the route matches, otherwise the matching continues.
+#[derive(Debug, Clone, Copy)]
+enum Routes {
+    Static,
+    Dynamic(u32),
+}
 
-The segment can be of any type that implements `FromSegments`. (Vec<String> implements this by default)
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route("/", get(handler))
+        .route("/users/:id", get(handler));
 
-Catch All segments must be the _last route segment_ in the path (query segments are not counted) and cannot be included in nests.
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+
+async fn handler(
+    axum::extract::Path(id): axum::extract::Path<u32>,
+) {
+    // ...
+}
+```
+
+## 通配符段
+
+通配符段的形式为 `:..name`，其中 `name` 是路由变体中字段的名称。如果段成功解析，则路由匹配，否则匹配继续。
+
+段可以是任何实现 `FromSegments` 的类型。（Vec<String> 默认实现此接口）
+
+通配符段必须是路径中的 _最后一个路由段_（查询段不算在内），并且不能包含在嵌套中。
 
 ```rust
 {{#include src/doc_examples/catch_all_segments.rs:route}}
 ```
 
-## Query Segments
+```rust
+use axum::{routing::get, Router};
 
-Query segments are in the form of `?:name&:othername` where `name` and `othername` are the names of fields in the route variant.
+#[derive(Debug, Clone, Copy)]
+enum Routes {
+    Static,
+    CatchAll(Vec<String>),
+}
 
-Unlike [Dynamic Segments](#dynamic-segments) and [Catch All Segments](#catch-all-segments), parsing a Query segment must not fail.
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route("/", get(handler))
+        .route("/users/*path", get(handler));
 
-The segment can be of any type that implements `FromQueryArgument`.
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
 
-Query segments must be the _after all route segments_ and cannot be included in nests.
+async fn handler(
+    axum::extract::Path(path): axum::extract::Path<Vec<String>>,
+) {
+    // ...
+}
+```
+
+## 查询段
+
+查询段的形式为 `?:name&:othername`，其中 `name` 和 `othername` 是路由变体中字段的名称。
+
+与 [Dynamic Segments](#dynamic-segments) 和 [Catch All Segments](#catch-all-segments) 不同，解析查询段必须不会失败。
+
+段可以是任何实现 `FromQueryArgument` 的类型。
+
+查询段必须在 _所有路由段之后_，并且不能包含在嵌套中。
 
 ```rust
 {{#include src/doc_examples/query_segments.rs:route}}
+```
+
+```rust
+use axum::{routing::get, Router};
+use std::str::FromStr;
+
+#[derive(Debug, Clone, Copy)]
+enum Routes {
+    Static,
+    Query(u32, String),
+}
+
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route("/", get(handler))
+        .route("/users", get(handler));
+
+    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
+
+async fn handler(
+    axum::extract::Query(query): axum::extract::Query<(u32, String)>,
+) {
+    // ...
+}
 ```

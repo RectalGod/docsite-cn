@@ -1,11 +1,12 @@
-# Logging
-Dioxus has a wide range of supported platforms, each with their own logging requirements. We'll discuss the different options available for your projects.
+# 日志记录
 
-#### The Tracing Crate
-The [Tracing](https://crates.io/crates/tracing) crate is the logging interface that the Dioxus library uses. It is not required to use the Tracing crate, but you will not recieve logs from the Dioxus library.
+Dioxus 支持多种平台，每个平台都有自己的日志记录需求。我们将讨论为您的项目提供的不同选项。
 
-The Tracing crate provides a variety of simple `println`-like macros with varying levels of severity. 
-The available macros are as follows with the highest severity on the bottom:
+#### Tracing 框架
+[Tracing](https://crates.io/crates/tracing) 框架是 Dioxus 库使用的日志记录接口。不需要使用 Tracing 框架，但您将不会收到来自 Dioxus 库的日志。
+
+Tracing 框架提供各种简单的 `println` 样式的宏，具有不同的严重级别。
+可用的宏如下所示，最底部的严重级别最高：
 ```rs
 fn main() {
     tracing::trace!("trace");
@@ -15,14 +16,14 @@ fn main() {
     tracing::error!("error");
 }
 ```
-All the loggers provided on this page are, besides configuration and initialization, interfaced using these macros. Often you will also utilize the Tracing crate's `Level` enum. This enum usually represents the maximum log severity you want your application to emit and can be loaded from a variety of sources such as configuration file, environment variable, and more.
+除了配置和初始化之外，此页面上提供的所有记录器都使用这些宏进行交互。您通常还会使用 Tracing 框架的 `Level` 枚举。该枚举通常表示应用程序要发出的最大日志严重级别，并且可以从多种来源加载，例如配置文件、环境变量等等。
 
-For more information, visit the Tracing crate's [docs](https://docs.rs/tracing/latest/tracing/).
+有关更多信息，请访问 Tracing 框架的 [docs](https://docs.rs/tracing/latest/tracing/) 页面。
 
-## Dioxus Logger
-[Dioxus Logger](https://crates.io/crates/dioxus-logger) is a logging utility that will start the appropriate logger for the platform. Currently every platform except mobile is supported.
+## Dioxus 记录器
+[Dioxus Logger](https://crates.io/crates/dioxus-logger) 是一个日志记录实用程序，它将为平台启动相应的记录器。目前除了移动平台之外，所有平台都支持。
 
-To use Dioxus Logger, call the `init()` function:
+要使用 Dioxus 记录器，请调用 `init()` 函数：
 ```rs
 use tracing::Level;
 
@@ -32,33 +33,32 @@ fn main() {
     // Dioxus launch code
 }
 ```
-The `dioxus_logger::init()` function initializes Dioxus Logger with the appropriate tracing logger using the default configuration and provided `Level`.
+`dioxus_logger::init()` 函数使用默认配置和提供的 `Level` 初始化 Dioxus 记录器，并使用相应的 Tracing 记录器。
 
-#### Platform Intricacies
-On web, Dioxus Logger will use [tracing-wasm](https://crates.io/crates/tracing-wasm). On Desktop and server-based targets, Dioxus Logger will use [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber`.
+#### 平台差异
+在 Web 平台上，Dioxus 记录器将使用 [tracing-wasm](https://crates.io/crates/tracing-wasm)。在桌面和基于服务器的目标平台上，Dioxus 记录器将使用 [tracing-subscriber](https://crates.io/crates/tracing-subscriber) 的 `FmtSubscriber`。
 
-#### Final Notes
-Dioxus Logger is the preferred logger to use with Dioxus if it suites your needs. There are more features to come and Dioxus Logger is planned to become an integral part of Dioxus. If there are any feature suggestions or issues with Dioxus Logger, feel free to reach out on the [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM)!
+#### 最后说明
+如果符合您的需求，Dioxus 记录器是与 Dioxus 一起使用的首选记录器。未来会有更多功能，Dioxus 记录器计划成为 Dioxus 不可或缺的一部分。如果有任何功能建议或 Dioxus 记录器问题，请随时在 [Dioxus Discord Server](https://discord.gg/XgGxMSkvUM) 上联系我们！
 
-For more information, visit Dioxus Logger's [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/).
+有关更多信息，请访问 Dioxus 记录器的 [docs](https://docs.rs/dioxus-logger/latest/dioxus_logger/) 页面。
 
-## Desktop and Server
-For Dioxus' desktop and server targets, you can generally use the logger of your choice.
+## 桌面和服务器
+对于 Dioxus 的桌面和服务器目标平台，您通常可以使用您选择的记录器。
 
+一些流行的选项包括：
+- [tracing-subscriber](https://crates.io/crates/tracing-subscriber) 的 `FmtSubscriber` 用于控制台输出。
+- [tracing-appender](https://crates.io/crates/tracing-appender) 用于将日志记录到文件。
+- [tracing-bunyan-formatter](https://crates.io/crates/tracing-bunyan-formatter) 用于 Bunyan 格式。
 
-Some popular options are:
-- [tracing-subscriber](https://crates.io/crates/tracing-subscriber)'s `FmtSubscriber` for console output.
-- [tracing-appender](https://crates.io/crates/tracing-appender) for logging to files.
-- [tracing-bunyan-formatter](https://crates.io/crates/tracing-bunyan-formatter) for the Bunyan format.
+为了使本指南简短，我们将不介绍这些框架的使用方法。
 
-To keep this guide short, we will not be covering the usage of these crates.
-
-For a full list of popular tracing-based logging crates, visit [this](https://docs.rs/tracing/latest/tracing/#related-crates) list in the Tracing crate's docs.
+有关流行的基于 Tracing 的日志记录框架的完整列表，请访问 Tracing 框架文档中的 [this](https://docs.rs/tracing/latest/tracing/#related-crates) 列表。
 
 ## Web
-[tracing-wasm](https://crates.io/crates/tracing-wasm) is a logging interface that can be used with Dioxus' web platform.
+[tracing-wasm](https://crates.io/crates/tracing-wasm) 是一个日志记录接口，可用于 Dioxus 的 Web 平台。
 
-The easiest way to use WASM Logger is with the `set_as_global_default` function:
+使用 WASM 记录器最简单的方法是使用 `set_as_global_default` 函数：
 ```rs
 fn main() {
     // Init logger
@@ -66,9 +66,9 @@ fn main() {
     // Dioxus code
 }
 ```
-This starts tracing with a `Level` of `Trace`. 
+这将使用 `Level` 的 `Trace` 启动 Tracing。
 
-Using a custom `level` is a little trickier. We need to use the `WasmLayerConfigBuilder` and start the logger with `set_as_global_default_with_config()`:
+使用自定义 `level` 会稍微复杂一些。我们需要使用 `WasmLayerConfigBuilder` 并使用 `set_as_global_default_with_config()` 启动记录器：
 ```rs
 use tracing::Level;
 
@@ -80,11 +80,11 @@ fn main() {
 }
 ```
 
-# Mobile
-Unfortunately there are no tracing crates that work with mobile targets. As an alternative you can use the [log](https://crates.io/crates/log) crate.
+# 移动
+不幸的是，没有与移动目标平台兼容的 Tracing 框架。作为替代方案，您可以使用 [log](https://crates.io/crates/log) 框架。
 
 ## Android
-[Android Logger](https://crates.io/crates/android_logger) is a logging interface that can be used when targeting Android. Android Logger runs whenever an event `native_activity_create` is called by the Android system:
+[Android Logger](https://crates.io/crates/android_logger) 是一个日志记录接口，可用于针对 Android 平台。Android 记录器在 Android 系统调用事件 `native_activity_create` 时运行：
 ```rs
 use log::LevelFilter;
 use android_logger::Config;
@@ -97,19 +97,19 @@ fn native_activity_create() {
     );
 }
 ```
-The `with_tag()` is what your app's logs will show as.
+`with_tag()` 是您的应用程序日志将显示的内容。
 
-#### Viewing Logs
-Android logs are sent to logcat. To use logcat through the Android debugger, run:
+#### 查看日志
+Android 日志发送到 logcat。要通过 Android 调试器使用 logcat，请运行：
 ```cmd
 adb -d logcat
 ```
-Your Android device will need developer options/usb debugging enabled.
+您的 Android 设备需要启用开发者选项/USB 调试。
 
-For more information, visit android_logger's [docs](https://docs.rs/android_logger/latest/android_logger/).
+有关更多信息，请访问 android_logger 的 [docs](https://docs.rs/android_logger/latest/android_logger/) 页面。
 
 ## iOS
-The current option for iOS is the [oslog](https://crates.io/crates/oslog) crate. 
+iOS 目前的选项是 [oslog](https://crates.io/crates/oslog) 框架。
 
 ```rs
 fn main() {
@@ -122,7 +122,7 @@ fn main() {
 }
 ```
 
-#### Viewing Logs
-You can view the emitted logs in Xcode. 
+#### 查看日志
+您可以在 Xcode 中查看发出的日志。
 
-For more information, visit [oslog](https://crates.io/crates/oslog). 
+有关更多信息，请访问 [oslog](https://crates.io/crates/oslog)。

@@ -1,8 +1,8 @@
-# Dioxus Guide
+# Dioxus 指南
 
-## Introduction
+## 简介
 
-In this guide, you'll learn to use Dioxus to build user interfaces that run anywhere. We will recreate the hackernews homepage in Dioxus:
+在本指南中，您将学习使用 Dioxus 构建可在任何地方运行的用户界面。我们将使用 Dioxus 重新创建 Hacker News 首页：
 
 ```inject-dioxus
 DemoFrame {
@@ -10,4 +10,4 @@ DemoFrame {
 }
 ```
 
-This guide serves a very brief overview of Dioxus. Throughout the guide, there will be links to the [reference](../reference/index.md) with more details about specific concepts.
+本指南简要概述了 Dioxus。在整个指南中，将链接到 [reference](../reference/index.md)，其中包含有关特定概念的更多详细信息。

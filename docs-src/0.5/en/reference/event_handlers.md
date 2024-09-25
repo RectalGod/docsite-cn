@@ -1,94 +1,36 @@
-# Event Handlers
+# 事件处理程序
 
-Event handlers are used to respond to user actions. For example, an event handler could be triggered when the user clicks, scrolls, moves the mouse, or types a character.
+事件处理程序用于响应用户操作。例如，当用户点击、滚动、移动鼠标或输入字符时，可以触发一个事件处理程序。
 
-Event handlers are attached to elements. For example, we usually don't care about all the clicks that happen within an app, only those on a particular button.
+事件处理程序附加到元素上。例如，我们通常不关心应用中发生的所有点击，只关心特定按钮上的点击。
 
-Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered and will be passed that event.
+事件处理程序类似于常规属性，但它们的名称通常以 `on` 开头，并接受闭包作为值。闭包将在监听的事件触发时被调用，并传递该事件。
 
-For example, to handle clicks on an element, we can specify an `onclick` handler:
+例如，要处理元素上的点击，我们可以指定一个 `onclick` 处理程序：
 
 ```rust, no_run
 {{#include src/doc_examples/event_click.rs:rsx}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_1de46db1-66a3-405c-b966-864499f96a46]]]inject-dioxus
 DemoFrame {
     event_click::App {}
 }
-```
-
-## The `Event` object
-
-Event handlers receive an [`Event`](https://docs.rs/dioxus-core/latest/dioxus_core/struct.Event.html) object containing information about the event. Different types of events contain different types of data. For example, mouse-related events contain [`MouseData`](https://docs.rs/dioxus/latest/dioxus/events/struct.MouseData.html), which tells you things like where the mouse was clicked and what mouse buttons were used.
-
-In the example above, this event data was logged to the terminal:
-
-```
+[[[CODE_BLOCK_c0f2db9e-f6db-4d8e-9e4c-2116a78e4ef7]]]
 Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
 Clicked! Event: UiEvent { bubble_state: Cell { value: true }, data: MouseData { coordinates: Coordinates { screen: (242.0, 256.0), client: (26.0, 17.0), element: (16.0, 7.0), page: (26.0, 17.0) }, modifiers: (empty), held_buttons: EnumSet(), trigger_button: Some(Primary) } }
-```
-
-To learn what the different event types for HTML provide, read the [events module docs](https://docs.rs/dioxus-html/latest/dioxus_html/events/index.html).
-
-### Event propagation
-
-Some events will trigger first on the element the event originated at upward. For example, a click event on a `button` inside a `div` would first trigger the button's event listener and then the div's event listener.
-
-> For more information about event propagation see [the mdn docs on event bubbling](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_bubbling)
-
-If you want to prevent this behavior, you can call `stop_propagation()` on the event:
-
-```rust, no_run
+[[[CODE_BLOCK_782512b7-728f-40cb-93d8-55c89bbde5f5]]]rust, no_run
 {{#include src/doc_examples/event_nested.rs:rsx}}
-```
-
-## Prevent Default
-
-Some events have a default behavior. For keyboard events, this might be entering the typed character. For mouse events, this might be selecting some text.
-
-In some instances, might want to avoid this default behavior. For this, you can add the `prevent_default` attribute with the name of the handler whose default behavior you want to stop. This attribute can be used for multiple handlers using their name separated by spaces:
-
-```rust, no_run
+[[[CODE_BLOCK_2ce4800d-2785-4043-b399-1af16f134f9c]]]rust, no_run
 {{#include src/doc_examples/event_prevent_default.rs:prevent_default}}
-```
-
-```inject-dioxus
+[[[CODE_BLOCK_ed26c8c6-2607-4a0d-a895-af97880d4310]]]inject-dioxus
 DemoFrame {
     event_prevent_default::App {}
 }
-```
-
-Any event handlers will still be called.
-
-> Normally, in React or JavaScript, you'd call "preventDefault" on the event in the callback. Dioxus does _not_ currently support this behavior. Note: this means you cannot conditionally prevent default behavior based on the data in the event.
-
-## Handler Props
-
-Sometimes, you might want to make a component that accepts an event handler. A simple example would be a `FancyButton` component, which accepts an `onclick` handler:
-
-```rust, no_run
+[[[CODE_BLOCK_8d4f2bd9-09c0-491c-8624-e26ab437a546]]]rust, no_run
 {{#include src/doc_examples/event_handler_prop.rs:component_with_handler}}
-```
-
-Then, you can use it like any other handler:
-
-```rust, no_run
+[[[CODE_BLOCK_3233b273-b06c-4c4e-af0b-e715b8c716e7]]]rust, no_run
 {{#include src/doc_examples/event_handler_prop.rs:usage}}
-```
-
-> Note: just like any other attribute, you can name the handlers anything you want! Any closure you pass in will automatically be turned into an `EventHandler`.
-
-#### Async Event Handlers
-Passing `EventHandler`s as props does not support passing a closure that returns an async block. Instead, you must manually call ``spawn`` to do async operations:
-```rust, no_run
+[[[CODE_BLOCK_b6ead1a2-335a-4160-86a0-b4cfe576f2d0]]]rust, no_run
 {{#include src/doc_examples/event_handler_prop.rs:async}}
-```
-This is only the case for custom event handlers as props.
-
-## Custom Data
-
-Event Handlers are generic over any type, so you can pass in any data you want to them, e.g:
-
-```rust, no_run
+[[[CODE_BLOCK_e5fc5939-6f52-4883-8716-e83cbe2c6484]]]rust, no_run
 {{#include src/doc_examples/event_handler_prop.rs:custom_data}}
 ```

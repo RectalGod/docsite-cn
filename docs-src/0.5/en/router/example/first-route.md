@@ -1,76 +1,66 @@
-# Creating Our First Route
+# 创建第一个路由
 
-In this chapter, we will start utilizing Dioxus Router and add a homepage and a
-404 page to our project.
+在本节中，我们将开始使用 Dioxus Router 并为我们的项目添加一个主页和一个 404 页面。
 
-## Fundamentals
+## 基础
 
-The core of the Dioxus Router is the [`Routable`] macro and the [`Router`] component.
+Dioxus Router 的核心是 [`Routable`] 宏和 [`Router`] 组件。
 
+Routable 是一个用于任何能够执行以下操作的特性：
 
-Routable is a trait for anything that can:
-- Be parsed from a URL
-- Be turned into a URL
-- Be rendered as to a Element
+- 从 URL 解析
+- 转换为 URL
+- 渲染为 Element
 
-
-Let's create a new router. First, we need an actual page to route to! Let's add a homepage component:
+让我们创建一个新的路由器。首先，我们需要一个实际的页面来进行路由！让我们添加一个主页组件：
 
 ```rust
 {{#include src/doc_examples/first_route.rs:home}}
 ```
 
-## Creating Routes
+## 创建路由
 
-We want to use Dioxus Router to separate our application into different "pages".
-Dioxus Router will then determine which page to render based on the URL path.
+我们希望使用 Dioxus Router 将我们的应用程序划分为不同的“页面”。Dioxus Router 将根据 URL 路径确定要渲染哪个页面。
 
-To start using Dioxus Router, we need to use the [`Routable`] macro.
+要开始使用 Dioxus Router，我们需要使用 [`Routable`] 宏。
 
-The [`Routable`] macro takes an enum with all of the possible routes in our application. Each variant of the enum represents a route and must be annotated with the `#[route(path)]` attribute.
+[`Routable`] 宏接受一个枚举，其中包含我们应用程序中所有可能的路由。枚举的每个变体都代表一个路由，并且必须使用 `#[route(path)]` 属性进行标注。
 
 ```rust
 {{#include src/doc_examples/first_route.rs:router}}
 ```
 
-The [`Router`] component will provide a router context for all the inner components and hooks to use. You usually will want to place this at the top of your components tree.
+[`Router`] 组件将为所有内部组件和钩子提供路由上下文。您通常希望将其放在组件树的顶部。
 
 ```rust
 {{#include src/doc_examples/first_route.rs:app}}
 ```
 
-If you head to your application's browser tab, you should now see the text
-`Welcome to Dioxus Blog!` when on the root URL (`http://localhost:8080/`). If
-you enter a different path for the URL, nothing should be displayed.
+如果您转到应用程序的浏览器选项卡，现在应该在根 URL (`http://localhost:8080/`) 上看到文本 `Welcome to Dioxus Blog!`。如果您为 URL 输入不同的路径，则不应该显示任何内容。
 
-This is because we told Dioxus Router to render the `Home` component only when
-the URL path is `/`.
+这是因为我们告诉 Dioxus Router 仅当 URL 路径为 `/` 时才渲染 `Home` 组件。
 
-## Fallback Route
+## 备用路由
 
-In our example, when a route doesn't exist Dioxus Router doesn't render anything. Many sites also have a "404" page when a path does not exist. Let's add one to our site.
+在我们的示例中，当路由不存在时，Dioxus Router 不会渲染任何内容。许多网站在路径不存在时也会显示“404”页面。让我们在我们的网站上添加一个。
 
-First, we create a new `PageNotFound` component.
+首先，我们创建一个新的 `PageNotFound` 组件。
 
 ```rust
 {{#include src/doc_examples/catch_all.rs:fallback}}
 ```
 
-Next, register the route in the Route enum to match if all other routes fail.
+接下来，在 Route 枚举中注册路由以匹配所有其他路由失败的情况。
 
 ```rust
 {{#include src/doc_examples/catch_all.rs:router}}
 ```
 
-Now when you go to a route that doesn't exist, you should see the page not found
-text.
+现在，当您转到不存在的路由时，您应该看到页面未找到文本。
 
-## Conclusion
+## 结论
 
-In this chapter, we learned how to create a route and tell Dioxus Router what
-component to render when the URL path is `/`. We also created a 404 page to
-handle when a route doesn't exist. Next, we'll create the blog portion of our
-site. We will utilize nested routes and URL parameters.
+在本节中，我们学习了如何创建路由并告诉 Dioxus Router 在 URL 路径为 `/` 时渲染哪个组件。我们还创建了一个 404 页面来处理路由不存在的情况。接下来，我们将创建我们网站的博客部分。我们将使用嵌套路由和 URL 参数。
 
 [`Router`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Router.html
 [`Routable`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Routable.html

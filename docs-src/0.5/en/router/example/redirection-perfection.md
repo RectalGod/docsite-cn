@@ -1,41 +1,35 @@
-# Redirection Perfection
+# 重定向精通
 
-You're well on your way to becoming a routing master!
+您已经踏上了成为路由大师的道路！
 
-In this chapter, we will cover creating redirects
+本章我们将介绍如何创建重定向。
 
-## Creating Redirects
+## 创建重定向
 
-A redirect is very simple. When dioxus encounters a redirect while finding out
-what components to render, it will redirect the user to the target of the
-redirect.
+重定向非常简单。当 Dioxus 在寻找要渲染的组件时遇到重定向时，它会将用户重定向到重定向的目标。
 
-As a simple example, let's say you want user to still land on your blog, even
-if they used the path `/myblog` or `/myblog/:name`.
+举个简单的例子，假设您希望用户即使使用 `/myblog` 或 `/myblog/:name` 的路径，也能访问您的博客。
 
-Redirects are special attributes in the router enum that accept a route and a closure
-with the route parameters. The closure should return a route to redirect to.
+重定向是路由枚举中的特殊属性，它接受一个路由和一个带有路由参数的闭包。闭包应该返回一个要重定向到的路由。
 
-Let's add a redirect to our router enum:
+让我们在我们的路由枚举中添加一个重定向：
 
 ```rust
 {{#include src/doc_examples/full_example.rs:router}}
 ```
 
-That's it! Now your users will be redirected to the blog.
+就是这样！现在您的用户将被重定向到博客。
 
-### Conclusion
+### 结论
 
-Well done! You've completed the Dioxus Router guide. You've built a small 
-application and learned about the many things you can do with Dioxus Router.
-To continue your journey, you attempt a challenge listed below, look at the [router examples](https://github.com/DioxusLabs/dioxus/tree/main/packages/router/examples), or 
-the [API reference](https://docs.rs/dioxus-router/).
+做得很好！您已经完成了 Dioxus Router 指南。您已经构建了一个小型应用程序，并了解了使用 Dioxus Router 可以做很多事情。
+要继续您的旅程，您可以尝试以下列出的挑战，查看 [router examples](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/router/examples) 或 [API reference](https://docs.rs/dioxus-router/)。
 
-### Challenges
+### 挑战
 
-- Organize your components into separate files for better maintainability.
-- Give your app some style if you haven't already.
-- Build an about page so your visitors know who you are.
-- Add a user system that uses URL parameters.
-- Create a simple admin system to create, delete, and edit blogs.
-- If you want to go to the max, hook up your application to a rest API and database.
+- 将您的组件组织到单独的文件中，以提高可维护性。
+- 如果您还没有，请为您的应用程序添加一些样式。
+- 构建一个关于页面，让您的访问者了解您是谁。
+- 添加一个使用 URL 参数的用户系统。
+- 创建一个简单的管理系统来创建、删除和编辑博客。
+- 如果您想挑战极限，请将您的应用程序连接到 REST API 和数据库。

@@ -1,20 +1,20 @@
-# Your First Component
+# 你的第一个组件
 
-This chapter will teach you how to create a [Component](../reference/components.md) that displays a link to a post on hackernews.
+本章将教你如何创建一个[Component](../reference/components.md)，它显示指向 Hacker News 上文章的链接。
 
-## Setup
+## 设置
 
-> Before you start the guide, make sure you have the dioxus CLI and any required dependencies for your platform as described in the [getting started](../getting_started/index.md) guide.
+> 在开始本指南之前，请确保你已安装 Dioxus CLI 以及你所选平台所需的任何依赖项，如[getting started](../getting_started/index.md)指南中所述。
 
-First, let's create a new project for our hacker news app. We can use the CLI to create a new project. You can select a platform of your choice or view the getting started guide for more information on each option. If you aren't sure what platform to try out, we recommend getting started with web or desktop:
+首先，让我们为我们的 Hacker News 应用创建一个新项目。我们可以使用 CLI 创建一个新项目。你可以选择你想要的平台，或者查看入门指南以获取有关每个选项的更多信息。如果你不确定尝试哪个平台，我们建议从 Web 或桌面开始：
 
 ```sh
 dx new
 ```
 
-The template contains some boilerplate to help you get started. For this guide, we will be rebuilding some of the code from scratch for learning purposes. You can clear the `src/main.rs` file. We will be adding new code in the next sections.
+模板包含一些样板代码来帮助你入门。在本指南中，我们将从头开始重建一些代码，以便于学习。你可以清空`src/main.rs`文件。我们将在下一节中添加新代码。
 
-Next, let's setup our dependencies. We need to set up a few dependencies to work with the hacker news API: 
+接下来，让我们设置我们的依赖项。我们需要设置一些依赖项来使用 Hacker News API：
 
 ```sh
 cargo add chrono --features serde
@@ -25,17 +25,17 @@ cargo add serde_json
 cargo add async_recursion
 ```
 
-## Describing the UI
+## 描述 UI
 
-Now, we can define how to display a post. Dioxus is a *declarative* framework. This means that instead of telling Dioxus what to do (e.g. to "create an element" or "set the color to red") we simply *declare* how we want the UI to look. 
+现在，我们可以定义如何显示文章。Dioxus 是一个*声明式*框架。这意味着我们不是告诉 Dioxus 要做什么（例如“创建一个元素”或“将颜色设置为红色”），而是简单地*声明*我们希望 UI 的外观。
 
-To declare what you want your UI to look like, you will need to use the `rsx` macro. Let's create a ``main`` function and an ``App`` component to show information about our story:
+要声明你希望 UI 的外观，你需要使用`rsx`宏。让我们创建一个``main``函数和一个``App``组件来显示关于我们故事的信息：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v1}}
 ```
 
-Now if you run your application you should see something like this:
+现在，如果你运行你的应用程序，你应该看到类似这样的内容：
 
 ```inject-dioxus
 DemoFrame {
@@ -43,22 +43,22 @@ DemoFrame {
 }
 ```
 
-> RSX mirrors HTML. Because of this you will need to know some html to use Dioxus.
+> RSX 类似于 HTML。因此，你需要了解一些 HTML 才能使用 Dioxus。
 > 
-> Here are some resources to help get you started learning HTML:
+> 以下是一些资源可以帮助你开始学习 HTML：
 > - [MDN HTML Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
 > - [W3 Schools HTML Tutorial](https://www.w3schools.com/html/default.asp)
 > 
-> In addition to HTML, Dioxus uses CSS to style applications. You can either use traditional CSS (what this guide uses) or use a tool like [tailwind CSS](https://tailwindcss.com/docs/installation):
+> 除了 HTML 之外，Dioxus 还使用 CSS 来为应用程序设置样式。你可以使用传统的 CSS（本指南中使用的）或使用像[tailwind CSS](https://tailwindcss.com/docs/installation):
 > - [MDN Traditional CSS Guide](https://developer.mozilla.org/en-US/docs/Learn/HTML)
 > - [W3 Schools Traditional CSS Tutorial](https://www.w3schools.com/css/default.asp)
-> - [Tailwind tutorial](https://tailwindcss.com/docs/installation) (used with the [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind))
+> - [Tailwind tutorial](https://tailwindcss.com/docs/installation) (与 [Tailwind setup example](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind) 一起使用)
 > 
-> If you have existing html code, you can use the [translate](../CLI/translate.md) command to convert it to RSX. Or if you prefer to write html, you can use the [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) to write html directly in your code.
+> 如果你有现有的 html 代码，你可以使用 [translate](../CLI/translate.md) 命令将其转换为 RSX。或者如果你更喜欢编写 html，你可以使用 [html! macro](https://github.com/DioxusLabs/dioxus-html-macro) 在代码中直接编写 html。
 
-## Dynamic Text
+## 动态文本
 
-Let's expand our `App` component to include the story title, author, score, time posted, and number of comments. We can insert dynamic text in the render macro by inserting variables inside `{}`s (this works similarly to the formatting in the [println!](https://doc.rust-lang.org/std/macro.println.html) macro):
+让我们扩展我们的`App`组件，以包括故事标题、作者、评分、发布时间和评论数量。我们可以在渲染宏中插入动态文本，方法是在`{}`中插入变量（这类似于[println!](https://doc.rust-lang.org/std/macro.println.html)宏中的格式）：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v2}}
@@ -70,9 +70,9 @@ DemoFrame {
 }
 ```
 
-## Creating Elements
+## 创建元素
 
-Next, let's wrap our post description in a [`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div). You can create HTML elements in Dioxus by putting a `{` after the element name and a `}` after the last child of the element:
+接下来，让我们将我们的文章描述包装在一个[`div`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) 中。你可以在 Dioxus 中创建 HTML 元素，方法是在元素名称后面加上一个`{`，在元素的最后一个子节点后面加上一个`}`：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v3}}
@@ -84,13 +84,13 @@ DemoFrame {
 }
 ```
 
-> You can read more about elements in the [rsx reference](../reference/rsx.md).
+> 你可以在[rsx reference](../reference/rsx.md)中了解更多关于元素的信息。
 
-## Setting Attributes
+## 设置属性
 
-Next, let's add some padding around our post listing with an attribute.
+接下来，让我们在文章列表周围添加一些填充，使用一个属性。
 
-Attributes (and [listeners](../reference/event_handlers.md)) modify the behavior or appearance of the element they are attached to. They are specified inside the `{}` brackets before any children, using the `name: value` syntax. You can format the text in the attribute as you would with a text node:
+属性（以及[listeners](../reference/event_handlers.md)) 修改它们所附加元素的行为或外观。它们在任何子节点之前，在`{}`方括号内指定，使用`name: value`语法。你可以像对文本节点一样格式化属性中的文本：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v4}}
@@ -102,25 +102,25 @@ DemoFrame {
 }
 ```
 
-> Note: All attributes defined in [`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) follow the snake_case naming convention. They transform their `snake_case` names to HTML's `camelCase` attributes.
+> 注意：在[`dioxus-html`](https://docs.rs/dioxus-html/latest/dioxus_html/) 中定义的所有属性都遵循 snake_case 命名约定。它们将它们的`snake_case`名称转换为 HTML 的`camelCase`属性。
 
-> Note: Styles can be used directly outside of the `style:` attribute. In the above example, `padding: "0.5rem"` is turned into `style="padding: 0.5rem"`.
+> 注意：样式可以直接在`style:`属性之外使用。在上面的例子中，`padding: "0.5rem"` 被转换为 `style="padding: 0.5rem"`。
 
-> You can read more about elements in the [attribute reference](../reference/rsx.md)
+> 你可以在[attribute reference](../reference/rsx.md)中了解更多关于元素的信息。
 
-## Creating a Component
+## 创建组件
 
-Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+就像你不会想在一个单一的、很长的、`main` 函数中编写一个复杂的程序一样，你也不应该在一个单一的`App` 函数中构建一个复杂的 UI。相反，你应该将应用程序的功能分解成称为组件的逻辑部分。
 
-A component is a Rust function, named in UpperCamelCase, that takes a props parameter and returns an `Element` describing the UI it wants to render. In fact, our `App` function is a component!
+组件是一个 Rust 函数，以 UpperCamelCase 命名，它接受一个 props 参数，并返回一个`Element`，描述了它想要渲染的 UI。事实上，我们的`App` 函数就是一个组件！
 
-Let's pull our story description into a new component:
+让我们将我们的故事描述拉到一个新的组件中：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v5}}
 ```
 
-We can render our component like we would an element by putting `{}`s after the component name. Let's modify our `App` component to render our new StoryListing component:
+我们可以像渲染元素一样渲染我们的组件，在组件名称后面加上`{}`。让我们修改我们的`App`组件，以渲染我们新的 StoryListing 组件：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:app_v5}}
@@ -132,37 +132,37 @@ DemoFrame {
 }
 ```
 
-> You can read more about elements in the [component reference](../reference/components.md)
+> 你可以在[component reference](../reference/components.md)中了解更多关于元素的信息。
 
-## Creating Props
+## 创建 Props
 
-Just like you can pass arguments to a function or attributes to an element, you can pass props to a component that customize its behavior!
+就像你可以向函数传递参数或向元素传递属性一样，你也可以向组件传递 props，以自定义其行为！
 
-We can define arguments that components can take when they are rendered (called `Props`) by adding the `#[component]` macro before our function definition and adding extra function arguments.
+我们可以在组件被渲染时定义组件可以接受的参数（称为`Props`)，方法是在函数定义之前添加`#[component]`宏，并添加额外的函数参数。
 
-Currently, our `StoryListing` component always renders the same story. We can modify it to accept a story to render as a prop.
+目前，我们的`StoryListing`组件始终渲染同一个故事。我们可以对其进行修改，使其接受一个要渲染的故事作为 prop。
 
 
-We will also define what a post is and include information for how to transform our post to and from a different format using [serde](https://serde.rs). This will be used with the hackernews API in a later chapter:
+我们还将定义什么是文章，并包括如何使用[serde](https://serde.rs)将我们的文章转换为不同的格式，以及如何从不同的格式转换回来。这将在后面的章节中与 Hacker News API 一起使用：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_v6}}
 ```
 
-Make sure to also add [serde](https://serde.rs) as a dependency:
+确保也添加[serde](https://serde.rs)作为依赖项：
 
 ```bash
 cargo add serde --features derive
 cargo add serde_json
 ```
 
-We will also use the [chrono](https://crates.io/crates/chrono) crate to provide utilities for handling time data from the hackernews API:
+我们还将使用[chrono](https://crates.io/crates/chrono) crate 来提供用于处理 Hacker News API 中的时间数据的实用程序：
 ```bash
 cargo add chrono --features serde
 ```
 
 
-Now, let's modify the `App` component to pass the story to our `StoryListing` component like we would set an attribute on an element:
+现在，让我们修改`App`组件，以将故事传递给我们的`StoryListing`组件，就像我们在元素上设置属性一样：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:app_v6}}
@@ -174,13 +174,13 @@ DemoFrame {
 }
 ```
 
-> You can read more about Props in the [Props reference](../reference/component_props.md)
+> 你可以在[Props reference](../reference/component_props.md)中了解更多关于 Props 的信息。
 
-## Cleaning Up Our Interface
+## 清理我们的界面
 
-Finally, by combining elements and attributes, we can make our post listing much more appealing:
+最后，通过组合元素和属性，我们可以使我们的文章列表更具吸引力：
 
-Full code up to this point:
+到目前为止的完整代码：
 
 ```rust
 {{#include src/doc_examples/hackernews_post.rs:story_final}}

@@ -1,29 +1,29 @@
 # Tailwind
 
-You can style your Dioxus application with whatever CSS framework you choose, or just write vanilla CSS.
+您可以使用您选择的任何 CSS 框架来为您的 Dioxus 应用程序设置样式，或者只编写纯 CSS。
 
 
-One popular option for styling your Dioxus application is [Tailwind](https://tailwindcss.com/). Tailwind allows you to style your elements with CSS utility classes. This guide will show you how to setup tailwind CSS with your Dioxus application.
+一个流行的选项是使用 [Tailwind](https://tailwindcss.com/) 为您的 Dioxus 应用程序设置样式。Tailwind 允许您使用 CSS 实用程序类来设置元素的样式。本指南将向您展示如何在您的 Dioxus 应用程序中设置 Tailwind CSS。
 
-## Setup
+## 设置
 
-1. Install the Dioxus CLI:
+1. 安装 Dioxus CLI：
 
 ```bash
 cargo install dioxus-cli
 ```
 
-2. Install npm: [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-3. Install the tailwind css cli: [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
-4. Initialize the tailwind css project:
+2. 安装 npm： [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+3. 安装 Tailwind CSS CLI： [https://tailwindcss.com/docs/installation](https://tailwindcss.com/docs/installation)
+4. 初始化 Tailwind CSS 项目：
 
 ```bash
 npx tailwindcss init
 ```
 
-This should create a `tailwind.config.js` file in the root of the project.
+这将在项目的根目录中创建一个 `tailwind.config.js` 文件。
 
-5. Edit the `tailwind.config.js` file to include rust files:
+5. 编辑 `tailwind.config.js` 文件以包含 Rust 文件：
 
 ```js
 module.exports = {
@@ -41,7 +41,7 @@ module.exports = {
 }
 ```
 
-6. Create a `input.css` file in the root of your project with the following content:
+6. 在项目的根目录中创建一个名为 `input.css` 的文件，内容如下：
 
 ```css
 @tailwind base;
@@ -49,22 +49,22 @@ module.exports = {
 @tailwind utilities;
 ```
 
-7. Add [Manganis](https://github.com/DioxusLabs/manganis) to your project to handle asset collection.
+7. 在您的项目中添加 [Manganis](https://github.com/DioxusLabs/manganis) 以处理资产收集。
 
 ```sh
 cargo add manganis
 ```
 
-8. Create a link to the `tailwind.css` file using manganis somewhere in your rust code:
+8. 使用 manganis 在您的 Rust 代码中的某个地方创建一个指向 `tailwind.css` 文件的链接：
 
 ```rust
 {{#include src/doc_examples/tailwind.rs}}
 ```
 
-### Bonus Steps
+### 附加步骤
 
-1. Install the tailwind css vs code extension
-2. Go to the settings for the extension and find the experimental regex support section. Edit the setting.json file to look like this:
+1. 安装 Tailwind CSS VS Code 扩展
+2. 转到扩展的设置，找到实验性正则表达式支持部分。编辑 setting.json 文件使其如下所示：
 
 ```json
 "tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
@@ -73,9 +73,9 @@ cargo add manganis
 },
 ```
 
-## Development
+## 开发
 
-- Run the following command in the root of the project to start the tailwind css compiler:
+- 在项目的根目录中运行以下命令以启动 Tailwind CSS 编译器：
 
 ```bash
 npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
@@ -83,17 +83,17 @@ npx tailwindcss -i ./input.css -o ./public/tailwind.css --watch
 
 ### Web
 
-- Run the following command in the root of the project to start the dioxus dev server:
+- 在项目的根目录中运行以下命令以启动 Dioxus 开发服务器：
 
 ```bash
 dx serve
 ```
 
-- Open the browser to [http://localhost:8080](http://localhost:8080).
+- 在浏览器中打开 [http://localhost:8080](http://localhost:8080)。
 
-### Desktop
+### 桌面
 
-- Launch the dioxus desktop app:
+- 启动 Dioxus 桌面应用程序：
 
 ```bash
 dx serve --platform desktop

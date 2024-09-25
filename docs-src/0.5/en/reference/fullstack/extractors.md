@@ -1,10 +1,10 @@
-# Extractors
+# 提取器
 
-Server functions are an ergonomic way to call a function on the server. Server function work by registering an endpoint on the server and using requests on the client. Most of the time, you shouldn't need to worry about how server functions operate, but there are some times when you need to get some value from the request other than the data passed in the server function.
+服务器函数是一种调用服务器上函数的便捷方式。服务器函数通过在服务器上注册一个端点并在客户端使用请求来工作。大多数情况下，你不需要担心服务器函数是如何运作的，但有时你需要从请求中获取一些数据，而不仅仅是传递给服务器函数的数据。
 
-For example, requests contain information about the user's browser (called the [user agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent)). We can use an extractor to retrieve that information.
+例如，请求包含有关用户浏览器的信息（称为 [[[LINK_URL_e219ad18-9163-4e19-9b98-4093734eb429]]）。我们可以使用提取器来检索这些信息。
 
-You can use the `extract` method within a server function to extract something from the request. You can extract any type that implements `FromServerContext` (or when axum is enabled, you can use axum extractors directly):
+你可以在服务器函数中使用 `extract` 方法从请求中提取一些内容。你可以提取任何实现了 `FromServerContext` 的类型（或者当启用 axum 时，你可以直接使用 axum 提取器）：
 
 ```rust
 {{#include src/doc_examples/server_function_extract.rs:server_function_extract}}

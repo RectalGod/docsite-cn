@@ -1,112 +1,57 @@
-# Dynamic Rendering
+# 动态渲染
 
-Sometimes you want to render different things depending on the state/props. With Dioxus, just describe what you want to see using Rust control flow – the framework will take care of making the necessary changes on the fly if the state or props change!
+有时候你希望根据状态/属性渲染不同的内容。使用 Dioxus，只需使用 Rust 控制流描述你想要看到的内容——框架会在状态或属性发生变化时自动进行必要的更改！
 
-## Conditional Rendering
+## 条件渲染
 
-To render different elements based on a condition, you could use an `if-else` statement:
+要根据条件渲染不同的元素，你可以使用 ``if-else`` 语句：
 
 ```rust, no_run
 {{#include src/doc_examples/conditional_rendering.rs:if_else}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_429dd041-6ebf-4bb1-9d4f-1f2a96f4d188]]]inject-dioxus
 DemoFrame {
   conditional_rendering::App {}
 }
-```
-
-> You could also use `match` statements, or any Rust function to conditionally render different things.
-
-### Improving the `if-else` Example
-
-You may have noticed some repeated code in the `if-else` example above. Repeating code like this is both bad for maintainability and performance. Dioxus will skip diffing static elements like the button, but when switching between multiple `rsx` calls it cannot perform this optimization. For this example either approach is fine, but for components with large parts that are reused between conditionals, it can be more of an issue.
-
-We can improve this example by splitting up the dynamic parts and inserting them where they are needed.
-
-```rust, no_run
+[[[CODE_BLOCK_ec130c63-4f25-452c-8b25-0c7ef9d9b3bd]]]rust, no_run
 {{#include src/doc_examples/conditional_rendering.rs:if_else_improved}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_a7790350-f4c7-4308-a7c2-5a61a7154e41]]]inject-dioxus
 DemoFrame {
   conditional_rendering::LogInImprovedApp {}
 }
-```
-
-### Inspecting `Element` props
-
-Since `Element` is a `Option<VNode>`, components accepting `Element` as a prop can inspect its contents, and render different things based on that. Example:
-
-```rust, no_run
+[[[CODE_BLOCK_50623923-d62e-486f-b1c3-6216fef01d07]]]rust, no_run
 {{#include src/doc_examples/component_children_inspect.rs:Clickable}}
-```
-
-You can't mutate the `Element`, but if you need a modified version of it, you can construct a new one based on its attributes/children/etc.
-
-## Rendering Nothing
-
-To render nothing, you can return `None` from a component. This is useful if you want to conditionally hide something:
-
-```rust, no_run
+[[[CODE_BLOCK_3ac194c5-e6ed-4a17-a8ea-6ff2a7c27c48]]]rust, no_run
 {{#include src/doc_examples/conditional_rendering.rs:conditional_none}}
-```
-
-```inject-dioxus
+[[[CODE_BLOCK_f7cd995a-be77-4386-b8c5-d08e6a69064e]]]inject-dioxus
 DemoFrame {
   conditional_rendering::LogInWarningApp {}
 }
-```
-
-This works because the `Element` type is just an alias for `Option<VNode>`
-
-> Again, you may use a different method to conditionally return `None`. For example the boolean's [`then()`](https://doc.rust-lang.org/std/primitive.bool.html#method.then) function could be used.
-
-## Rendering Lists
-
-Often, you'll want to render a collection of components. For example, you might want to render a list of all comments on a post.
-
-For this, Dioxus accepts iterators that produce `Element`s. So we need to:
-
-- Get an iterator over all of our items (e.g., if you have a `Vec` of comments, iterate over it with `iter()`)
-- `.map` the iterator to convert each item into a `LazyNode` using `rsx!{...}`  
-  - Add a unique `key` attribute to each iterator item
-- Include this iterator in the final RSX (or use it inline)
-
-Example: suppose you have a list of comments you want to render. Then, you can render them like this:
-
-```rust, no_run
+[[[CODE_BLOCK_75f9c996-56b5-42c0-be02-dc252fb2a152]]]rust, no_run
 {{#include src/doc_examples/rendering_lists.rs:render_list}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_0ffed4d2-5e53-4d1d-8459-01ffd28f2f2f]]]inject-dioxus
 DemoFrame {
   rendering_lists::App {}
 }
-```
-
-### Inline for loops
-
-Because of how common it is to render a list of items, Dioxus provides a shorthand for this. Instead of using `.iter`, `.map`, and `rsx`, you can use a `for` loop with a body of rsx code:
-
-```rust, no_run
+[[[CODE_BLOCK_f8c44836-5a50-4a56-b9f9-f3c3fe95effc]]]rust, no_run
 {{#include src/doc_examples/rendering_lists.rs:render_list_for_loop}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_9905c464-5e26-4fee-b291-7f9a59ca9902]]]inject-dioxus
 DemoFrame {
   rendering_lists::AppForLoop {}
 }
 ```
 
-### The `key` Attribute
+### ``key`` 属性
 
-Every time you re-render your list, Dioxus needs to keep track of which items go where to determine what updates need to be made to the UI.
+每次重新渲染列表时，Dioxus 都需要跟踪每个项目的位置，以确定需要对 UI 进行哪些更新。
 
-For example, suppose the `CommentComponent` had some state – e.g. a field where the user typed in a reply. If the order of comments suddenly changes, Dioxus needs to correctly associate that state with the same comment – otherwise, the user will end up replying to a different comment!
+例如，假设 ``CommentComponent`` 有一些状态——例如，用户在其中键入回复的字段。如果评论的顺序突然发生变化，Dioxus 需要将该状态正确地与同一评论关联——否则，用户最终会回复不同的评论！
 
-To help Dioxus keep track of list items, we need to associate each item with a unique key. In the example above, we dynamically generated the unique key. In real applications, it's more likely that the key will come from e.g. a database ID. It doesn't matter where you get the key from, as long as it meets the requirements:
+为了帮助 Dioxus 跟踪列表项，我们需要将每个项目与一个唯一的键关联。在上面的示例中，我们动态生成了唯一的键。在实际应用中，键更有可能来自数据库 ID 等。从哪里获取键并不重要，只要它满足以下要求：
 
-- Keys must be unique in a list
-- The same item should always get associated with the same key
-- Keys should be relatively small (i.e. converting the entire Comment structure to a String would be a pretty bad key) so they can be compared efficiently
+- 键在列表中必须是唯一的
+- 相同的项目应该始终与相同的键关联
+- 键应该相对较小（例如，将整个 `Comment` 结构转换为字符串将是一个非常糟糕的键），以便可以有效地比较它们
 
-You might be tempted to use an item's index in the list as its key. That’s what Dioxus will use if you don’t specify a key at all. This is only acceptable if you can guarantee that the list is constant – i.e., no re-ordering, additions, or deletions.
+你可能很想将列表中项目的索引用作其键。如果你根本没有指定键，Dioxus 将使用它。只有在你能保证列表是恒定的情况下，这才可以接受——即没有重新排序、添加或删除。
 
-> Note that if you pass the key to a component you've made, it won't receive the key as a prop. It’s only used as a hint by Dioxus itself. If your component needs an ID, you have to pass it as a separate prop.
+> 请注意，如果你将键传递给已创建的组件，它不会将键作为属性接收。它仅用作 Dioxus 本身的提示。如果你的组件需要 ID，则必须将其作为单独的属性传递。

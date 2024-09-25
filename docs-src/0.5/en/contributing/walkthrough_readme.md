@@ -1,51 +1,20 @@
-# Walkthrough of the Hello World Example Internals
+# Hello World 示例内部机制详解
 
-This walkthrough will take you through the internals of the Hello World example program. It will explain how major parts of Dioxus internals interact with each other to take the readme example from a source file to a running application. This guide should serve as a high-level overview of the internals of Dioxus. It is not meant to be a comprehensive guide.
+本指南将带您深入了解 Hello World 示例程序的内部机制。它将解释 Dioxus 内部机制的主要部分如何相互作用，将 README 示例从源文件转化为正在运行的应用程序。本指南旨在提供 Dioxus 内部机制的高级概述，并非详尽无遗的指南。
 
-
-The core crate roughly works like this:
+Dioxus 的核心库大致按以下方式运作：
 
 ![](https://mermaid.ink/img/pako:eNqNk01v2zAMhv8KocsuTQ876lCgWAb0sGDD0mMAg7PoWogsBvpwWhT976MlJ3OKbKtOEvmIfEWRr6plQ0qrmDDR2uJTwGE1ft55kBXIGwqNHQYyVvywWt3BA3rjKGj4gs5BX0-V_1n4QtUthW_Mh6WzWgryg537OpJPsQJ_zsX9PrmG0fBwWxM2NIH1nmdRFuxTn4C7K4mn9djTpYAjWsnTcQBaSJiWxIcULEVILCIiu5Egyf3RhpTRwfr75tOC73LKggGmQkUcBLcDVUJyFoF_qcEkoxEVzZHDvjIXpnOhtm1PJp8rvcGw37Z8oPu4FlkvhVvbrivGypyP_3dWXRo2WdrAsp-fN391Qd5n1BBnSU0-GDy9sHyGo678xcOyOU7fMHcMHINNtcgIPfP-Wr2WAu6NeeRzGTS0z7fxgEd_7T3_Zi8b5kp1T1IxvvgWfjlu9x-SexHqo1VTN2qgMKA1MoavU6CdkkaSBlJatoY6zC7t1M6_CYo58VZUKZ1CphtVo8yDq3SHLopVJiZx2NTRLhP-9htxEk8q?type=png)
 
-## The Source File
+## 源文件
 
-We start will a hello world program. This program renders a desktop app with the text "Hello World" in a webview.
+我们从一个 Hello World 程序开始。该程序渲染一个桌面应用程序，并在网页视图中显示文本 "Hello World"。
 
 ```rust, no_run
 {{#include src/doc_examples/readme.rs}}
-```
-
-[![](https://mermaid.ink/img/pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw?type=png)](https://mermaid.live/edit#pako:eNqNkT1vwyAQhv8KvSlR48HphtQtqjK0S6tuSBGBS0CxwcJHk8rxfy_YVqxKVdR3ug_u4YXrQHmNwOFQ-bMyMhB7fReOJbVxfwyyMSy0l7GSpW1ARda727ksUy5MuSyKgvBC5ULA1h5N8WK_kCkfHWHgrBuiXsBynrvdsY9E3u1iM_eyvFOVVadMnELOap-o1911JLPHZ1b-YqLTc3LjTt7WifTZMJPsPdx1ov3Z_ellfcdL8R8vmTy5eUqsTUpZ-vzZzjAEK6gx1NLqtJwuNwSQwRoF8BRqGU4ChOvTORnJf3w7BZxCxBXERkvCjZXpQTXwg6zaVEVtyYe3cdvD0vsf4bucgw)
-
-## The rsx! Macro
-
-Before the Rust compiler runs the program, it will expand all [macros](https://doc.rust-lang.org/reference/procedural-macros.html). Here is what the hello world example looks like expanded:
-
-```rust, no_run
+[[[CODE_BLOCK_38d31399-4f79-4cc3-9ffb-c84f3064d26f]]]rust, no_run
 {{#include src/doc_examples/readme_expanded.rs}}
-```
-
-The rsx macro separates the static parts of the rsx (the template) and the dynamic parts (the [dynamic_nodes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_nodes) and [dynamic_attributes](https://docs.rs/dioxus-core/0.5.0/dioxus_core/prelude/struct.VNode.html#structfield.dynamic_attrs)).
-
-The static template only contains the parts of the rsx that cannot change at runtime with holes for the dynamic parts:
-
-[![](https://mermaid.ink/img/pako:eNqdksFuwjAMhl8l8wkkKtFx65njdtm0E0GVSQKJoEmVOgKEeHecUrXStO0wn5Lf9u8vcm6ggjZQwf4UzspiJPH2Ib3g6NLuELG1oiMkp0TsLs9EDu2iUeSCH8tz2HJmy3lRFPrqsXGq9mxeLzcbCU6LZSUGXWRdwnY7tY7Tdoko-Dq1U64fODgiUfzJMeuOe7_ZGq-ny2jNhGQu9DqT8NUK6w72RcL8dxgdzv4PnHLAKf-Fk80HoBUDrfkqeBkTUd8EC2hMbNBpXtYtJySQNQ0PqPioMR4lSH_nOkwUPq9eQUUxmQWkViOZtUN-UwPVHk8dq0Y7CvH9uf3-E9wfrmuk1A?type=png)](https://mermaid.live/edit#pako:eNqdksFuwjAMhl8l8wkkKtFx65njdtm0E0GVSQKJoEmVOgKEeHecUrXStO0wn5Lf9u8vcm6ggjZQwf4UzspiJPH2Ib3g6NLuELG1oiMkp0TsLs9EDu2iUeSCH8tz2HJmy3lRFPrqsXGq9mxeLzcbCU6LZSUGXWRdwnY7tY7Tdoko-Dq1U64fODgiUfzJMeuOe7_ZGq-ny2jNhGQu9DqT8NUK6w72RcL8dxgdzv4PnHLAKf-Fk80HoBUDrfkqeBkTUd8EC2hMbNBpXtYtJySQNQ0PqPioMR4lSH_nOkwUPq9eQUUxmQWkViOZtUN-UwPVHk8dq0Y7CvH9uf3-E9wfrmuk1A)
-
-The dynamic_nodes and dynamic_attributes are the parts of the rsx that can change at runtime:
-
-[![](https://mermaid.ink/img/pako:eNp1UcFOwzAM_RXLVzZpvUbighDiABfgtkxTlnirtSaZUgc0df130hZEEcwny35-79nu0EZHqHDfxA9bmyTw9KIDlGjz7pDMqQZ3DsazhVCQ7dQbwnEiKxwDvN3NqhN4O4C3q_VaIztYKXjkQ7184HcCG3MQSgq6Mes1bjbTPAV3RdqIJN5l-V__2_Fcf5iY68dgG7ZHBT4WD5ftZfIBN7dQ_Tj4w1B9MVTXGZa_GMYdcIGekjfsymW7oaFRavKkUZXUmXTUqENfcCZLfD0Hi0pSpgXmkzNC92zKATyqvWnaUiXHEtPz9KrxY_0nzYOPmA?type=png)](https://mermaid.live/edit#pako:eNp1UcFOwzAM_RXLVzZpvUbighDiABfgtkxTlnirtSaZUgc0df130hZEEcwny35-79nu0EZHqHDfxA9bmyTw9KIDlGjz7pDMqQZ3DsazhVCQ7dQbwnEiKxwDvN3NqhN4O4C3q_VaIztYKXjkQ7184HcCG3MQSgq6Mes1bjbTPAV3RdqIJN5l-V__2_Fcf5iY68dgG7ZHBT4WD5ftZfIBN7dQ_Tj4w1B9MVTXGZa_GMYdcIGekjfsymW7oaFRavKkUZXUmXTUqENfcCZLfD0Hi0pSpgXmkzNC92zKATyqvWnaUiXHEtPz9KrxY_0nzYOPmA)
-
-## Launching the App
-
-The app is launched by calling the `launch` function with the root component. Internally, this function will create a new web view using [wry](https://docs.rs/wry/latest/wry/) and create a virtual dom with the root component (`fn app()` in the readme example). This guide will not explain the renderer in-depth, but you can read more about it in the [custom renderer](/guide/custom-renderer) section.
-
-## The Virtual DOM
-
-Before we dive into the initial render in the virtual DOM, we need to discuss what the virtual DOM is. The virtual DOM is a representation of the DOM that is used to diff the current DOM from the new DOM. This diff is then used to create a list of mutations that need to be applied to the DOM to bring it into sync with the virtual DOM.
-
-The Virtual DOM roughly looks like this:
-
-```rust, no_run
+[[[CODE_BLOCK_1206a7c7-32a7-4282-8485-7306e62a895a]]]rust, no_run
 pub struct VirtualDom {
     // All the templates that have been created or set during hot reloading
     pub(crate) templates: FxHashMap<TemplateId, FxHashMap<usize, Template<'static>>>,
@@ -67,75 +36,74 @@ pub struct VirtualDom {
 }
 ```
 
-> What is a [slab](https://docs.rs/slab/latest/slab/)?
+> 什么是 [slab](https://docs.rs/slab/latest/slab/)?
 >
-> A slab acts like a hashmap with integer keys if you don't care about the value of the keys. It is internally backed by a dense vector which makes it more efficient than a hashmap. When you insert a value into a slab, it returns an integer key that you can use to retrieve the value later.
+> 如果你不关心键的值，Slab 就像一个具有整型键的哈希表。它在内部由一个密集的向量支持，使其比哈希表更高效。当你将一个值插入 Slab 时，它会返回一个整型键，你可以用它来在以后检索该值。
 
-> How does Dioxus use slabs?
+> Dioxus 如何使用 Slab？
 >
-> Dioxus uses "synchronized slabs" to communicate between the renderer and the VDOM. When a node is created in the Virtual DOM, an (elementId, mutation) pair is passed to the renderer to identify that node, which the renderer will then render in actual DOM. These ids are also used by the Virtual Dom to reference that node in future mutations, like setting an attribute on a node or removing a node. When the renderer sends an event to the Virtual Dom, it sends the ElementId of the node that the event was triggered on. The Virtual DOM uses this id to find that node in the slab and then run the necessary event handlers.
+> Dioxus 使用“同步 Slab”在渲染器和 VDOM 之间进行通信。当在虚拟 DOM 中创建一个节点时，一个 (elementId, mutation) 对被传递给渲染器以标识该节点，渲染器随后会将该节点渲染到实际 DOM 中。这些 ID 也被虚拟 DOM 用于在未来的突变中引用该节点，例如设置节点的属性或移除节点。当渲染器向虚拟 DOM 发送事件时，它会发送触发该事件的节点的 ElementId。虚拟 DOM 使用此 ID 在 Slab 中找到该节点，然后运行必要的事件处理程序。
 
-The virtual DOM is a tree of scopes. A new `Scope` is created for every component when it is first rendered and recycled when the component is unmounted.
+虚拟 DOM 是一个作用域树。每个组件在首次渲染时都会创建一个新的 `Scope`，并在组件卸载时回收。
 
-Scopes serve three main purposes:
+作用域主要有三个目的：
 
-1. They store the state of hooks used by the component
-2. They store the state for the context API (for example: using
-   [use_context_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_context_provider.html)).
-3. They store the current and previous versions of the `VNode` that was rendered, so they can be
-   diffed to generate the set of mutations needed to re-render it.
+1. 它们存储组件使用的钩子的状态。
+2. 它们存储上下文 API 的状态（例如：使用
+   [use_context_provider](https://docs.rs/dioxus/latest/dioxus/prelude/fn.use_context_provider.html)）。
+3. 它们存储渲染的 `VNode` 的当前版本和先前版本，以便可以
+   进行差异比较以生成重新渲染所需的突变集。
 
-### The Initial Render
+### 初始渲染
 
-The root scope is created and rebuilt:
+根作用域被创建和重建：
 
-1. The root component is run
-2. The root component returns a `VNode`
-3. Mutations for this `VNode` are created and added to the mutation list (this may involve creating new child components)
-4. The `VNode` is stored in the root's `Scope`.
+1. 运行根组件。
+2. 根组件返回一个 `VNode`。
+3. 为此 `VNode` 创建突变并将其添加到突变列表中（这可能涉及创建新的子组件）。
+4. `VNode` 被存储在根的 `Scope` 中。
 
-After the root's `Scope` is built, all generated mutations are sent to the renderer, which applies them to the DOM.
+在根的 `Scope` 被构建后，所有生成的突变都被发送到渲染器，渲染器将它们应用于 DOM。
 
-After the initial render, the root `Scope` looks like this:
+在初始渲染之后，根 `Scope` 如下所示：
 
 [![](https://mermaid.ink/img/pako:eNqtVE1P4zAQ_SuzPrWikRpWXCLtBRDisItWsOxhCaqM7RKricdyJrQV8N93QtvQNCkfEnOynydv3nxkHoVCbUQipjnOVSYDwc_L1AFbWd3dB-kzuEQkuFLoDUwDFkCZAek9nGDh0RlHK__atA1GkUUHf45f0YbppAqB_aOzIAvz-t7-chN_Y-1bw1WSJKsglIu2w9tktWXxIIuHURT5XCqTYa5NmDguw2R8c5MKq2GcgF46WTB_jafi9rZL0yi5q4jQTSrf9altO4okCn1Ratwyz55Qxuku2ITlTMgs6HCQimsPmb3PvqVi-L5gjXP3QcnxWnL8JZLrwGvR31n0KV-Bx6-r-oVkT_-3G1S-NQLbk9i8rj7udP2cixed2QcDCitHJiQw7ub3EVlNecrPjudG2-6soFO5VbMECmR9T5OnlUY4-AFxfw9aTFst3McU9TK1Otm6NEn_DubBYlX2_dglLXOz48FgwJmJ5lZTlhz6xWgNaFnyDgpymcARHO0W2a9J_l5w2wYXvHuGPcqaQ-rESBQmFNJq3nCPNZoK3l4sUSR81DLMUpG6Z_aTFeHV0imRUKjMSFReSzKnVnKGhUimMi8ZNdoShl-rlfmyOUfCS_cPcePz_B_Wl4pc?type=png)](https://mermaid.live/edit#pako:eNqtVE1P4zAQ_SuzPrWikRpWXCLtBRDisItWsOxhCaqM7RKricdyJrQV8N93QtvQNCkfEnOynydv3nxkHoVCbUQipjnOVSYDwc_L1AFbWd3dB-kzuEQkuFLoDUwDFkCZAek9nGDh0RlHK__atA1GkUUHf45f0YbppAqB_aOzIAvz-t7-chN_Y-1bw1WSJKsglIu2w9tktWXxIIuHURT5XCqTYa5NmDguw2R8c5MKq2GcgF46WTB_jafi9rZL0yi5q4jQTSrf9altO4okCn1Ratwyz55Qxuku2ITlTMgs6HCQimsPmb3PvqVi-L5gjXP3QcnxWnL8JZLrwGvR31n0KV-Bx6-r-oVkT_-3G1S-NQLbk9i8rj7udP2cixed2QcDCitHJiQw7ub3EVlNecrPjudG2-6soFO5VbMECmR9T5OnlUY4-AFxfw9aTFst3McU9TK1Otm6NEn_DubBYlX2_dglLXOz48FgwJmJ5lZTlhz6xWgNaFnyDgpymcARHO0W2a9J_l5w2wYXvHuGPcqaQ-rESBQmFNJq3nCPNZoK3l4sUSR81DLMUpG6Z_aTFeHV0imRUKjMSFReSzKnVnKGhUimMi8ZNdoShl-rlfmyOUfCS_cPcePz_B_Wl4pc)
 
-### Waiting for Events
+### 等待事件
 
-The Virtual DOM will only ever re-render a `Scope` if it is marked as dirty. Each hook is responsible for marking the `Scope` as dirty if the state has changed. Hooks can mark a scope as dirty by sending a message to the Virtual Dom's channel. You can see the [implementations](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks) for the hooks dioxus includes by default on how this is done. Calling `needs_update()` on a hook will also cause it to mark its scope as dirty.
+虚拟 DOM 只有在标记为脏时才会重新渲染 `Scope`。每个钩子负责在状态发生变化时标记 `Scope` 为脏。钩子可以通过向虚拟 DOM 的通道发送消息来标记作用域为脏。你可以查看 [implementations](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks) 了解 Dioxus 默认包含的钩子是如何执行此操作的。调用 `needs_update()` 钩子也会导致它标记其作用域为脏。
 
-There are generally two ways a scope is marked as dirty:
+通常，作用域被标记为脏有两种方式：
 
-1. The renderer triggers an event: An event listener on this event may be called, which may mark a
-   component as dirty, if processing the event resulted in any generated any mutations.
-2. The renderer calls
-   [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work):
-   This polls dioxus internal future queue. One of these futures may mark a component as dirty.
+1. 渲染器触发事件：此事件上的事件监听器可能会被调用，如果处理事件导致生成任何突变，则可能会将组件标记为脏。
+2. 渲染器调用
+   [`wait_for_work`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.wait_for_work)：
+   这会轮询 Dioxus 内部未来队列。这些未来之一可能会标记组件为脏。
 
-Once at least one `Scope` is marked as dirty, the renderer can call [`render_immediate`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) to diff the dirty scopes.
+一旦至少有一个 `Scope` 被标记为脏，渲染器就可以调用 [`render_immediate`](https://docs.rs/dioxus/latest/dioxus/prelude/struct.VirtualDom.html#method.render_immediate) 来对脏作用域进行差异比较。
 
-### Diffing Scopes
+### 对作用域进行差异比较
 
-When a user clicks the "up high" button, the root `Scope` will be marked as dirty by the `use_signal` hook. The desktop renderer will then call `render_immediate`, which will diff the root `Scope`.
+当用户单击“向上”按钮时，根 `Scope` 将被 `use_signal` 钩子标记为脏。然后，桌面渲染器将调用 `render_immediate`，它将对根 `Scope` 进行差异比较。
 
-To start the diffing process, the component function is run. After the root component is run it, the root `Scope` will look like this:
+为了开始差异比较过程，将运行组件函数。在运行根组件之后，根 `Scope` 将如下所示：
 
-[![](https://mermaid.ink/img/pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0?type=png)](https://mermaid.live/edit#pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0)
+[![](https://mermaid.ink/img/pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Yt0nfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0?type=png)](https://mermaid.live/edit#pako:eNrFVlFP2zAQ_iuen0BrpCaIl0i8AEJ72KQJtpcRFBnbJVYTn-U4tBXw33dpG5M2CetoBfdkny_ffb67fPIT5SAkjekkhxnPmHXk-3WiCVpZ3T9YZjJyDeDIDQcjycRCQVwmCTOGXEBhQEvtVvG1CWUldwo0-XX-6vVIF5W1GB9cWVbI1_PNL5v8jW3uPFbpmFOc2HK-GfA2WG1ZeJSFx0EQmJxxmUEupE01liEd394mVAkyjolYaFYgfu1P6N1dF8Yzua-cA51WphtTWzsLc872Zan9CnEGUkktuk6fFm_i5NxFRwn9bUimHrIvCT3-N2EBM70j5XBNOTwI5TrxmvQJkr7ELcHx67Jeggz0v92g8q0RaE-iP1193On6NyxecKUeJeFQaSdtTMLu_Xah5ctT_u94Nty2ZwU0zxWfxqQA5PecPq84kq9nfRw7SK0WDiEFZ4O37d34S_-08lFBVfb92KVb5HIrAp0WpjKYKeGyODLz0dohWIkaZNkiJqfkdLvIH6oRaTSoEmm0n06k0a5K0ZdpL61Io0Ytnfpxc7UQ0_9cJrhyZ8syX-6brS706Mc489Vjja7fbWj3cxDqIdfJJqOaCFtwZTAV8hT7U0ovjBQRmiMS8HsNKGJfsE4Vjm4WWhOY2crOaKVEczJS8WwgAWNJywv0SuFcmB_rJ41y9fNiBqm_wA0MS9_AUuAiy0)
 
-Next, the Virtual DOM will compare the new VNode with the previous VNode and only update the parts of the tree that have changed. Because of this approach, when a component is re-rendered only the parts of the tree that have changed will be updated in the DOM by the renderer.
+接下来，虚拟 DOM 将比较新的 VNode 和之前的 VNode，只更新树中发生变化的部分。由于这种方法，当组件重新渲染时，只有发生变化的树部分才会被渲染器更新到 DOM 中。
 
-The diffing algorithm goes through the list of dynamic attributes and nodes and compares them to the previous VNode. If the attribute or node has changed, a mutation that describes the change is added to the mutation list.
+差异比较算法会遍历动态属性和节点列表，并将它们与之前的 VNode 进行比较。如果属性或节点发生了变化，一个描述该变化的突变将被添加到突变列表中。
 
-Here is what the diffing algorithm looks like for the root `Scope` (red lines indicate that a mutation was generated, and green lines indicate that no mutation was generated)
+以下是根 `Scope` 的差异比较算法（红线表示生成了突变，绿线表示没有生成突变）：
 
 [![](https://mermaid.ink/img/pako:eNrFlFFPwjAQx7_KpT7Kko2Elya8qCE-aGLAJ5khpe1Yw9Zbug4k4He3OJjbGPig0T5t17tf_nf777aEo5CEkijBNY-ZsfAwDjW4kxfzhWFZDGNECxOOmYTIYAo2lsCyDG4xzVBLbcv8_RHKSG4V6orSIN0Wxrh8b2RYKr_uTyubd1W92GiWKg7aac6bOU3G803HbVk82xfP_Ok0JEqAT-FeLWJvpFYSOBbaSkMhCMnra5MgtfhWFrPWqHlhL2urT6atbU-oa0PNE8WXFFJ0-nazXakRroddGk9IwYEUnCd5w7Pddr5UTT8ZuVJY5F0fM7ebRLYyXNDgUnprJWxM-9lb7xAQLHe-M2xDYQCD9pD_2hez_kVn-P_rjLq6n3qjYv2iO5qz9DyvPdyv1ETp5eTTJ_7BGvQq8v1TVtl5jXUcRRcrqFh-dI4VtFlBN6t_ynLNkh5JpUmZEm5rbvfhkLiN6H4BQt2jYGYZklC_uzxWWJxsNCfUmkL2SJEJZuWdYs4cKaERS3IXlUJZNI_lGv7cxj2SMf2CeMx5_wBcbK19?type=png)](https://mermaid.live/edit#pako:eNrFlFFPwjAQx7_KpT7Kko2Elya8qCE-aGLAJ5khpe1Yw9Zbug4k4He3OJjbGPig0T5t17tf_nf777aEo5CEkijBNY-ZsfAwDjW4kxfzhWFZDGNECxOOmYTIYAo2lsCyDG4xzVBLbcv8_RHKSG4V6orSIN0Wxrh8b2RYKr_uTyubd1W92GiWKg7aac6bOU3G803HbVk82xfP_Ok0JEqAT-FeLWJvpFYSOBbaSkMhCMnra5MgtfhWFrPWqHlhL2urT6atbU-oa0PNE8WXFFJ0-nazXakRroddGk9IwYEUnCd5w7Pddr5UTT8ZuVJY5F0fM7ebRLYyXNDgUnprJWxM-9lb7xAQLHe-M2xDYQCD9pD_2hez_kVn-P_rjLq6n3qjYv2iO5qz9DyvPdyv1ETp5eTTJ_7BGvQq8v1TVtl5jXUcRRcrqFh-dI4VtFlBN6t_ynLNkh5JpUmZEm5rbvfhkLiN6H4BQt2jYGYZklC_uzxWWJxsNCfUmkL2SJEJZuWdYs4cKaERS3IXlUJZNI_lGv7cxj2SMf2CeMx5_wBcbK19)
 
-## Conclusion
+## 结论
 
-This is only a brief overview of how the Virtual Dom works. There are several aspects not yet covered in this guide including:
+这仅仅是对虚拟 DOM 如何运作的简要概述。本指南中尚未涵盖几个方面，包括：
 
- * How the Virtual DOM handles async-components
- * Keyed diffing
- * Using [bump allocation](https://github.com/fitzgen/bumpalo) to efficiently allocate VNodes.
+* 虚拟 DOM 如何处理异步组件。
+* 带键的差异比较。
+* 使用 [bump allocation](https://github.com/fitzgen/bumpalo) 有效地分配 VNode。
 
-If you need more information about the Virtual Dom, you can read the code of the [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core) crate or reach out to us on [Discord](https://discord.gg/XgGxMSkvUM).
+如果你需要更多关于虚拟 DOM 的信息，可以阅读 [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core) 库的代码，或者在 [Discord](https://discord.gg/XgGxMSkvUM) 联系我们。

@@ -1,95 +1,95 @@
-# Mobile App
+# 移动应用
 
-Build a mobile app with Dioxus!
+使用 Dioxus 构建移动应用！
 
-Example: [Mobile Demo](https://github.com/DioxusLabs/dioxus/tree/main/examples/mobile_demo)
+示例：[Mobile Demo](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/mobile_demo)
 
-## Support
+## 支持
 
-Mobile is currently the least-supported renderer target for Dioxus. Mobile apps are rendered with either the platform's WebView or experimentally with [WGPU](https://github.com/DioxusLabs/blitz). WebView doesn't support animations, transparency, and native widgets.
+移动端目前是 Dioxus 支持最少的渲染目标。移动应用使用平台的 WebView 或实验性的 [WGPU](https://github.com/DioxusLabs/blitz) 渲染。WebView 不支持动画、透明度和原生小部件。
 
 
-Mobile support is currently best suited for CRUD-style apps, ideally for internal teams who need to develop quickly but don't care much about animations or native widgets.
+移动端支持目前最适合 CRUD 类型的应用，理想情况下适合需要快速开发但不关心动画或原生小部件的内部团队。
 
-## Getting Set up
+## 设置
 
-Getting set up with mobile can be quite challenging. The tooling here isn't great (yet) and might take some hacking around to get things working.
+使用移动端进行设置可能非常具有挑战性。此处的工具（目前）不是很好，可能需要一些调整才能让事情正常运行。
 
-### Setting up dependencies
+### 设置依赖项
 
 #### Android
 
-First, install the rust Android targets:
+首先，安装 rust Android 目标：
 
 ```sh
 rustup target add aarch64-linux-android armv7-linux-androideabi i686-linux-android x86_64-linux-android
 ```
 
-To develop on Android, you will need to [install Android Studio](https://developer.android.com/studio).
+要在 Android 上进行开发，您需要 [install Android Studio](https://developer.android.com/studio)。
 
-Once you have installed Android Studio, you will need to install the Android SDK and NDK:
+安装 Android Studio 后，您需要安装 Android SDK 和 NDK：
 
-1. Create a blank Android project
-2. Select `Tools > SDK manager`
-3. Navigate to the `SDK tools` window:
+1. 创建一个空白的 Android 项目
+2. 选择 `Tools > SDK manager`
+3. 导航到 `SDK tools` 窗口：
 
 ![NDK install window](./public/static/android_ndk_install.png)
 
-Then select:
-- The SDK
-- The SDK Command line tools
-- The NDK (side by side)
+然后选择：
+- SDK
+- SDK 命令行工具
+- NDK（并行）
 - CMAKE
 
-4. Select `apply` and follow the prompts
+4. 选择 `apply` 并按照提示操作
 
-> More details that could be useful for debugging any errors you encounter are available [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)
+> 有关调试您遇到的任何错误的更多详细信息，请访问 [in the official android docs](https://developer.android.com/studio/intro/update#sdk-manager)
 
-Next set the Java, Android and NDK home variables:
+接下来，设置 Java、Android 和 NDK 主机变量：
 
-Mac:
+Mac：
 ```sh
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export NDK_HOME="$ANDROID_HOME/ndk/25.2.9519653"
 ```
 
-Windows:
+Windows：
 ```powershell
 [System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Android\Android Studio\jbr", "User")
 [System.Environment]::SetEnvironmentVariable("ANDROID_HOME", "$env:LocalAppData\Android\Sdk", "User")
 [System.Environment]::SetEnvironmentVariable("NDK_HOME", "$env:LocalAppData\Android\Sdk\ndk\25.2.9519653", "User")
 ```
 
-> The NDK version in the paths should match the version you installed in the last step
+> 路径中的 NDK 版本应与您在最后一步安装的版本匹配
 
 #### IOS
 
-To develop on IOS, you will need to [install XCode](https://apps.apple.com/us/app/xcode/id497799835).
+要在 IOS 上进行开发，您需要 [install XCode](https://apps.apple.com/us/app/xcode/id497799835)。
 
-> If you are using M1, you will have to run `cargo build --target x86_64-apple-ios` instead of `cargo apple build` if you want to run in simulator.
+> 如果您使用的是 M1，则需要运行 `cargo build --target x86_64-apple-ios` 而不是 `cargo apple build`，如果您想在模拟器中运行。
 
-### Setting up your project
+### 设置您的项目
 
-First, we need to create a rust project:
+首先，我们需要创建一个 rust 项目：
 
 ```sh
 cargo new dioxus-mobile-test --lib
 cd dioxus-mobile-test
 ```
 
-Next, we can use `cargo-mobile2` to create a project for mobile:
+接下来，我们可以使用 `cargo-mobile2` 为移动端创建一个项目：
 
 ```shell
 cargo install --git https://github.com/tauri-apps/cargo-mobile2
 cargo mobile init
 ```
 
-When you run `cargo mobile init`, you will be asked a series of questions about your project. One of those questions is what template you should use. Dioxus currently doesn't have a template in Tauri mobile, instead you can use the `wry` template.
+当您运行 `cargo mobile init` 时，系统会询问您有关项目的一系列问题。其中一个问题是您应该使用什么模板。Dioxus 目前在 Tauri 移动端没有模板，您可以使用 `wry` 模板。
 
-> You may also be asked to input your team ID for IOS. You can find your team id [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) or create a team id by creating a developer account [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)
+> 您可能还会被要求输入您的 IOS 团队 ID。您可以在 [here](https://developer.apple.com/help/account/manage-your-team/locate-your-team-id/) 找到您的团队 ID，或者通过创建开发者帐户来创建团队 ID [here](https://developer.apple.com/help/account/get-started/about-your-developer-account)
 
-Next, we need to modify our dependencies to include dioxus and ensure the right version of wry is installed. Change the `[dependencies]` section of your `Cargo.toml`:
+接下来，我们需要修改我们的依赖项以包含 dioxus 并确保安装了正确版本的 wry。更改您 `Cargo.toml` 文件的 `[dependencies]` 部分：
 
 ```toml
 [dependencies]
@@ -100,7 +100,7 @@ tao = "0.26"
 dioxus = { version = "0.6", features = ["mobile"] }
 ```
 
-Finally, we need to add a component to renderer. Replace the wry template in your `lib.rs` file with this code:
+最后，我们需要向渲染器添加一个组件。用这段代码替换您 `lib.rs` 文件中的 wry 模板：
 
 ```rust
 use anyhow::Result;
@@ -189,46 +189,46 @@ fn app() -> Element {
 }
 ```
 
-## Running
+## 运行
 
-From there, you'll want to get a build of the crate using whichever platform you're targeting (simulator or actual hardware). For now, we'll just stick with the simulator.
+从那里，您需要使用您所针对的平台（模拟器或实际硬件）获取该板条箱的构建版本。现在，我们只坚持使用模拟器。
 
-First, you need to make sure that the build variant is correct in Android Studio:
-1. Click "Build" in the top menu bar.
-2. Click "Select Build Variant..." in the dropdown.
-3. Find the "Build Variants" panel and use the dropdown to change the selected build variant.
+首先，您需要确保 Android Studio 中的构建变体是正确的：
+1. 点击顶部菜单栏中的“构建”。
+2. 点击下拉菜单中的“选择构建变体...”。
+3. 找到“构建变体”面板，使用下拉菜单更改选定的构建变体。
 
 ![android studio build dropdown](./public/static/as-build-dropdown.png)
 ![android studio build variants](./public/static/as-build-variant-menu.png)
 
 ### Android
 
-To build your project on Android you can run:
+要在 Android 上构建您的项目，您可以运行：
 
 ```sh
 cargo android build
 ```
 
-Next, open Android studio:
+接下来，打开 Android Studio：
 ```sh
 cargo android open
 ```
 
-This will open an android studio project for this application.
+这将打开一个用于此应用程序的 Android Studio 项目。
 
-Next we need to create a simulator in Android studio to run our app in. To create a simulator click on the phone icon in the top right of Android studio:
+接下来，我们需要在 Android Studio 中创建一个模拟器来运行我们的应用。要创建模拟器，请点击 Android Studio 右上角的手机图标：
 
 ![android studio manage devices](./public/static/android-studio-simulator.png)
 
-Then click the `create a virtual device` button and follow the prompts:
+然后点击 `create a virtual device` 按钮并按照提示操作：
 
 ![android studio devices](./public/static/android-studio-devices.png)
 
-Finally, launch your device by clicking the play button on the device you created:
+最后，通过点击您创建的设备上的播放按钮启动您的设备：
 
 ![android studio device](./public/static/android-studio-device.png)
 
-Now you can start your application from your terminal by running:
+现在，您可以从终端启动应用程序，方法是运行：
 
 ```sh
 cargo android run
@@ -236,27 +236,27 @@ cargo android run
 
 ![android_demo](./public/static/Android-Dioxus-demo.png)
 
-> More information is available in the Android docs:
+> Android 文档中提供了更多信息：
 > - https://developer.android.com/ndk/guides
 > - https://developer.android.com/studio/projects/install-ndk
 > - https://source.android.com/docs/setup/build/rust/building-rust-modules/overview
 
 ### IOS
 
-To build your project for IOS, you can run:
+要在 IOS 上构建您的项目，您可以运行：
 ```sh
 cargo build --target aarch64-apple-ios-sim
 ```
 
-Next, open XCode (this might take awhile if you've never opened XCode before):
+接下来，打开 XCode（如果您之前从未打开过 XCode，这可能需要一段时间）：
 ```sh
 cargo apple open
 ```
 
-This will open XCode with this particular project.
+这将打开包含此特定项目的 XCode。
 
-From there, just click the "play" button with the right target and the app should be running!
+从那里，只需点击具有正确目标的“播放”按钮，该应用程序应该就会运行！
 
 ![ios_demo](./public/static/IOS-dioxus-demo.png)
 
-Note that clicking play doesn't cause a new build, so you'll need to keep rebuilding the app between changes. The tooling here is very young, so please be patient. If you want to contribute to make things easier, please do! We'll be happy to help.
+请注意，点击播放不会导致新的构建，因此您需要在每次更改之间重新构建应用程序。此处的工具还很年轻，所以请耐心等待。如果您想为简化流程做出贡献，请这样做！我们很乐意提供帮助。

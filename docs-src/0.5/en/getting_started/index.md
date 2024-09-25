@@ -1,29 +1,29 @@
-# Getting Started
+# 入门
 
-This section will help you set up your Dioxus project!
+本节将帮助您设置 Dioxus 项目！
 
-## Prerequisites
+## 先决条件
 
-### An Editor
+### 编辑器
 
-Dioxus integrates very well with the [Rust-Analyzer LSP plugin](https://rust-analyzer.github.io) which will provide appropriate syntax highlighting, code navigation, folding, and more.
+Dioxus 与 [Rust-Analyzer LSP plugin](https://rust-analyzer.github.io) 集成得很好，它将提供适当的语法高亮、代码导航、折叠等功能。
 
 ### Rust
 
-Head over to [https://rust-lang.org](http://rust-lang.org) and install the Rust compiler.
+前往 [https://rust-lang.org](http://rust-lang.org) 并安装 Rust 编译器。
 
-We strongly recommend going through the [official Rust book](https://doc.rust-lang.org/book/ch01-00-getting-started.html) _completely_. However, we hope that a Dioxus app can serve as a great first Rust project. With Dioxus, you'll learn about:
+我们强烈建议您完整地阅读 [official Rust book](https://doc.rust-lang.org/book/ch01-00-getting-started.html)。但是，我们希望 Dioxus 应用可以作为您第一个 Rust 项目的良好选择。使用 Dioxus，您将学习以下内容：
 
-- Error handling
-- Structs, Functions, Enums
-- Closures
-- Macros
+- 错误处理
+- 结构体、函数、枚举
+- 闭包
+- 宏
 
-We've put a lot of care into making Dioxus syntax familiar and easy to understand, so you won't need deep knowledge of async, lifetimes, or smart pointers until you start building complex Dioxus apps.
+我们非常注重使 Dioxus 语法易于理解和熟悉，因此您不必在开始构建复杂的 Dioxus 应用之前就深入了解异步、生命周期或智能指针。
 
-### Platform-specific dependencies
+### 平台特定依赖项
 
-Most platforms don't require any additional dependencies, but if you are targeting desktop, you can install the following dependencies:
+大多数平台不需要任何其他依赖项，但如果您要针对桌面平台，可以安装以下依赖项：
 
 ```inject-dioxus
 DesktopDependencies {}
@@ -31,17 +31,17 @@ DesktopDependencies {}
 
 ### Dioxus CLI
 
-Next, lets install the Dioxus CLI:
+接下来，让我们安装 Dioxus CLI：
 
 ```
 cargo install dioxus-cli
 ```
 
-If you get an OpenSSL error on installation, ensure the dependencies listed [here](https://docs.rs/openssl/latest/openssl/#automatic) are installed.
+如果您在安装时遇到 OpenSSL 错误，请确保安装了 [here](https://docs.rs/openssl/latest/openssl/#automatic) 中列出的依赖项。
 
-## Create a new project
+## 创建一个新项目
 
-You can create a new Dioxus project by running the following command and following the prompts:
+您可以通过运行以下命令并按照提示操作来创建一个新的 Dioxus 项目：
 
 ```sh
 dx new
@@ -62,33 +62,33 @@ video {
 }
 ```
 
-First you will need to select a platform. Each platform has its own reference with more information on how to set up a project for that platform. Here are the platforms we recommend starting with:
+首先，您需要选择一个平台。每个平台都有自己的参考，其中包含有关如何为该平台设置项目的更多信息。以下是我们建议您从哪些平台开始：
 
 - Web
-    - [Client Side](../reference/web/index.md): runs in the browser through WebAssembly
-    - [Fullstack](../reference/fullstack/index.md): renders to HTML text on the server and hydrates it on the client
-> If you are not sure which web platform you want to use, check out the [choosing a web renderer](choosing_a_web_renderer.md) chapter.
+    - [Client Side](../reference/web/index.md): 通过 WebAssembly 在浏览器中运行
+    - [Fullstack](../reference/fullstack/index.md): 在服务器上渲染为 HTML 文本，并在客户端对其进行水合
+> 如果您不确定要使用哪个 Web 平台，请查看 [choosing a web renderer](choosing_a_web_renderer.md) 章节。
 - WebView
-    - [Desktop](../reference/desktop/index.md): runs in a web view on desktop
-    - [Mobile](../reference/mobile/index.md): runs in a web view on mobile. Mobile is currently not supported by the dioxus CLI. The [mobile reference](../reference/mobile/index.md) has more information about setting up a mobile project
+    - [Desktop](../reference/desktop/index.md): 在桌面上的 Web 视图中运行
+    - [Mobile](../reference/mobile/index.md): 在移动设备上的 Web 视图中运行。目前，移动设备不受 dioxus CLI 支持。[mobile reference](../reference/mobile/index.md) 中有关于设置移动项目的更多信息
 
-Next, you can choose a styling library. For this project, we will use vanilla CSS.
+接下来，您可以选择一个样式库。对于这个项目，我们将使用纯 CSS。
 
-Finally, you can choose to start the project with the router enabled. The router is covered in the [router guide](../router/index.md).
+最后，您可以选择在启用路由器的情况下启动项目。路由器在 [router guide](../router/index.md) 中有介绍。
 
-## Running the project
+## 运行项目
 
-Once you have created your project, you can start it with the following command:
+创建项目后，您可以使用以下命令启动它：
 
 ```sh
 cd my_project
 dx serve
 ```
 
-For projects using the liveview template, run `dx serve --desktop`.
+对于使用 liveview 模板的项目，请运行 `dx serve --desktop`。
 
-For Web targets the application will be served at [http://localhost:8080](http://localhost:8080)
+对于 Web 目标，应用程序将提供服务于 [http://localhost:8080](http://localhost:8080)
 
-## Conclusion
+## 结论
 
-That's it! You now have a working Dioxus project. You can continue learning about dioxus by [making a hackernews clone in the guide](../guide/index.md), or learning about specific topics/platforms in the [reference](../reference/index.md). If you have any questions, feel free to ask in the [discord](https://discord.gg/XgGxMSkvUM) or [open a discussion](https://github.com/DioxusLabs/dioxus/discussions).
+就是这样！您现在已经拥有了一个可用的 Dioxus 项目。您可以继续学习 Dioxus，方法是 [making a hackernews clone in the guide](../guide/index.md)，或在 [reference](../reference/index.md) 中学习特定主题/平台。如果您有任何问题，请随时在 [discord](https://discord.gg/XgGxMSkvUM) 或 [open a discussion](https://github.com/DioxusLabs/dioxus/discussions) 中提问。

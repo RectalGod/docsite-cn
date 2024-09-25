@@ -1,29 +1,29 @@
 # Liveview
 
-Liveview allows apps to *run* on the server and *render* in the browser. It uses WebSockets to communicate between the server and the browser.
+Liveview 允许应用程序在服务器上*运行*并在浏览器中*渲染*。它使用 WebSockets 在服务器和浏览器之间进行通信。
 
-Examples:
-- [Simple Example](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview/examples/axum.rs)
+示例：
+- [Simple Example](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/liveview/examples/axum.rs)
 
-## Support
+## 支持
 
-Dioxus liveview will be migrated to [dioxus-fullstack](./fullstack/index.md) in a future release. Once this migration occurs, you may need to update your code. We plan for this migration to be minimal.
+Dioxus liveview 将在未来版本中迁移到 [dioxus-fullstack](./fullstack/index.md)。迁移完成后，您可能需要更新代码。我们计划让这次迁移尽可能简单。
 
-Liveview is currently limited in capability when compared to the Web platform. Liveview apps run on the server in a native thread. This means that browser APIs are not available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs are accessible, so streaming, WebSockets, filesystem, etc are all viable APIs.
+与 Web 平台相比，Liveview 目前功能有限。Liveview 应用程序在服务器上的原生线程中运行。这意味着浏览器 API 不可使用，因此渲染 WebGL、Canvas 等不像 Web 那样容易。但是，原生系统 API 是可访问的，因此流式传输、WebSockets、文件系统等都是可行的 API。
 
-## Router Integration
+## 路由器集成
 
-Currently, the Dioxus router does not integrate with the browser history in the liveview renderer. If you are interested in contributing this feature to Dioxus this issue is tracked [here](https://github.com/DioxusLabs/dioxus/issues/1038).
+目前，Dioxus 路由器并未与 liveview 渲染器中的浏览器历史记录集成。如果您有兴趣为 Dioxus 贡献此功能，请在 [here](https://github.com/DioxusLabs/dioxus/issues/1038) 跟踪该问题。
 
-## Managing Latency
+## 管理延迟
 
-Liveview makes it incredibly convenient to talk to your server from the client, but there are some downsides. Mainly in Dioxus Liveview every interaction goes through the server by default.
-
-
-Because of this, with the liveview renderer you need to be very deliberate about managing latency. Events that would be fast enough on other renderers like [controlled inputs](../../reference/user_input.md), can be frustrating to use in the liveview renderer.
+Liveview 使从客户端与服务器通信变得极其方便，但同时也存在一些缺点。在 Dioxus Liveview 中，默认情况下，每个交互都会经过服务器。
 
 
-To get around this issue you can inject bits of javascript in your liveview application. If you use a raw attribute as a listener, you can inject some javascript that will be run when the event is triggered:
+因此，在使用 liveview 渲染器时，您需要非常小心地管理延迟。在其他渲染器（例如 [controlled inputs](../../reference/user_input.md)）上足够快的事件，在 liveview 渲染器中使用起来可能会很令人沮丧。
+
+
+为了解决这个问题，您可以在 liveview 应用程序中注入一些 JavaScript 代码。如果使用原始属性作为监听器，您可以注入一些将在事件触发时运行的 JavaScript 代码：
 
 ```rust
 rsx! {

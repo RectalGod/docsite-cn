@@ -1,26 +1,25 @@
-# Mobile
+# 移动端
 
-This guide will cover concepts specific to the Dioxus mobile renderer.
+本指南将涵盖 Dioxus 移动端渲染器的特定概念。
 
-## Running Javascript
+## 运行 JavaScript
 
-Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose.
+Dioxus 提供了一些浏览器 API 的便捷封装，但在某些情况下，您可能需要访问 Dioxus 未公开的浏览器 API 部分。
 
-
-For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+对于这些情况，Dioxus 桌面端公开了 `use_eval` 钩子，它允许您在 Web 视图中运行原始 JavaScript：
 
 ```rust
 {{#include src/doc_examples/eval.rs}}
 ```
 
-## Custom Assets
+## 自定义资源
 
-You can link to local assets in dioxus mobile instead of using a url:
+您可以链接到 dioxus 移动端中的本地资源，而不是使用 URL：
 
 ```rust
 {{#include src/doc_examples/custom_assets.rs}}
 ```
 
-## Integrating with Wry
+## 与 Wry 集成
 
-In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html)
+在您需要对窗口进行更低级控制的情况下，您可以使用通过 [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) 和 [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.DesktopContext.html) 公开的 wry API。

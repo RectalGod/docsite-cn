@@ -1,39 +1,37 @@
-# Links & Navigation
+# 链接和导航
 
-When we split our app into pages, we need to provide our users with a way to
-navigate between them. On regular web pages, we'd use an anchor element for that,
-like this:
+当我们将应用程序拆分为多个页面时，需要为用户提供在页面之间导航的方式。在普通的网页中，我们会使用锚点元素来实现，例如：
 
 ```html
-<a href="/other">Link to an other page</a>
+<a href="/about">关于</a>
 ```
 
-However, we cannot do that when using the router for three reasons:
+然而，当使用路由器时，我们无法使用锚点元素，原因有三：
 
-1. Anchor tags make the browser load a new page from the server. This takes a
-   lot of time, and it is much faster to let the router handle the navigation
-   client-side.
-2. Navigation using anchor tags only works when the app is running inside a
-   browser. This means we cannot use them inside apps using Dioxus Desktop.
-3. Anchor tags cannot check if the target page exists. This means we cannot
-   prevent accidentally linking to non-existent pages.
+1. 锚点标签会导致浏览器从服务器加载新页面。这需要很长时间，而让路由器在客户端处理导航则快得多。
+2. 使用锚点标签进行导航仅在应用程序在浏览器中运行时有效。这意味着我们无法在使用 Dioxus Desktop 的应用程序中使用它们。
+3. 锚点标签无法检查目标页面是否存在。这意味着我们无法防止意外链接到不存在的页面。
 
-To solve these problems, the router provides us with a [`Link`] component we can
-use like this:
+为了解决这些问题，路由器提供了一个 `Link` 组件，我们可以像这样使用：
 
 ```rust
-{{#include src/doc_examples/links.rs:nav}}
+use dioxus::prelude::*;
+
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        div {
+            Link {
+                to: "/about", 
+                "关于"
+            }
+        }
+    })
+}
 ```
 
-The `target` in the example above is similar to the `href` of a regular anchor
-element. However, it tells the router more about what kind of navigation it
-should perform. It accepts something that can be converted into a
-[`NavigationTarget`]:
+上面的示例中的 `Link` 与常规锚点元素的 `href` 属性类似。但是，它告诉路由器更多关于它应该执行的导航类型的信息。它接受可以转换为 `NavigationTarget` 的内容：
 
-- The example uses a Internal route. This is the most common type of navigation.
-  It tells the router to navigate to a page within our app by passing a variant of a [`Routable`] enum. This type of navigation can never fail if the link component is used inside a router component.
-- [`External`] allows us to navigate to URLs outside of our app. This is useful
-  for links to external websites. NavigationTarget::External accepts an URL to navigate to. This type of navigation can fail if the URL is invalid.
+- 示例使用了内部路由。这是最常见的导航类型。它告诉路由器通过传递 `Route` 枚举的变体来导航到应用程序内的页面。如果链接组件在路由器组件内使用，这种类型的导航永远不会失败。
+- `NavigationTarget::External` 允许我们导航到应用程序之外的 URL。这对于链接到外部网站很有用。`NavigationTarget::External` 接受一个要导航到的 URL。如果 URL 无效，这种类型的导航可能会失败。
 
-> The [`Link`] accepts several props that modify its behavior. See the API docs
-> for more details.
+> `Link` 接受几个可以修改其行为的属性。有关详细信息，请参阅 API 文档。

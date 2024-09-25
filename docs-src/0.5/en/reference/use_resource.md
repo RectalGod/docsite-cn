@@ -1,18 +1,18 @@
-# Resource
+# 资源
 
-[`use_resource`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) lets you run an async closure, and provides you with its result.
+`use_resource`(https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_resource.html) 允许您运行异步闭包并提供其结果。
 
-For example, we can make an API request (using [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)) inside `use_resource`:
+例如，我们可以在 `use_resource` 内部进行 API 请求（使用 [reqwest](https://docs.rs/reqwest/latest/reqwest/index.html)）：
 
 ```rust
 {{#include src/doc_examples/use_resource.rs:use_resource}}
 ```
 
-The code inside `use_resource` will be submitted to the Dioxus scheduler once the component has rendered.
+`use_resource` 内部的代码将在组件渲染完成后提交到 Dioxus 调度程序。
 
-We can use `.read()` to get the result of the future. On the first run, since there's no data ready when the component loads, its value will be `None`. However, once the future is finished, the component will be re-rendered and the value will now be `Some(...)`, containing the return value of the closure.
+我们可以使用 `.read()` 获取未来结果。在第一次运行时，由于组件加载时没有准备好的数据，它的值将是 `None`。但是，一旦未来完成，组件将重新渲染，并且该值现在将是 `Some(...)`，其中包含闭包的返回值。
 
-We can then render that result:
+然后我们可以渲染结果：
 
 ```rust
 {{#include src/doc_examples/use_resource.rs:render}}
@@ -24,13 +24,13 @@ DemoFrame {
 }
 ```
 
-## Restarting the Future
+## 重启未来
 
-The `Resource` handle provides a `restart` method. It can be used to execute the future again, producing a new value.
+`Resource` 句柄提供了一个 `restart` 方法。它可以用来再次执行未来，产生一个新的值。
 
-## Dependencies
+## 依赖关系
 
-Often, you will need to run the future again every time some value (e.g. a state) changes. Rather than calling `restart` manually, you can read a signal inside of the future. It will automatically re-run the future when any of the states you read inside the future change. Example:
+通常，您需要在每次某些值（例如状态）发生变化时再次运行未来。与其手动调用 `restart`，您可以在未来内读取一个信号。当您在未来读取的任何状态发生变化时，它将自动重新运行未来。示例：
 
 ```rust, no_run
 {{#include src/doc_examples/use_resource.rs:dependency}}

@@ -1,38 +1,31 @@
-# Introduction
+# 简介
 
-> If you are not familiar with Dioxus itself, check out the [Dioxus guide](../guide/index.md) first.
+> 如果你不熟悉 Dioxus 本身，请先查看 [Dioxus guide](../guide/index.md)。
 
-Whether you are building a website, desktop app, or mobile app, splitting your app's views into "pages" can be an effective method for organization and maintainability.
+无论你是在构建网站、桌面应用程序还是移动应用程序，将应用程序的视图拆分为“页面”都可以是一种有效的组织和维护方法。
 
-For this purpose, Dioxus provides a router. Use the `cargo add` command to add the dependency:
+为此，Dioxus 提供了一个路由器。使用 `cargo add` 命令添加依赖项：
 
 ```sh
 cargo add dioxus@0.5.0 --features router
 ```
 
-Then, add this to your `Dioxus.toml` (learn more about configuration [here](../CLI/configure)):
+然后，将以下内容添加到你的 `Dioxus.toml`（了解更多关于配置 [here](../CLI/configure)）：
 
 ```toml
 [web.watcher]
 index_on_404 = true
 ```
 
-> This configuration only works when using `dx serve`. If you host your app in a different way (which you most likely do in production), you need to find out how to add a fallback 404 page to your app, and make it a copy of the generated `dist/index.html`.
+> 此配置仅在使用 `dx serve` 时有效。如果你以其他方式托管应用程序（在生产环境中你很可能这样做），你需要找出如何为应用程序添加一个 404 页面，并使其成为生成的 `dist/index.html` 的副本。
 
-This will instruct `dx serve` to redirect any unknown route to the index, to then be resolved by the router.
-The router works on the client. If we connect through the index route (e.g., `localhost:8080`, then click a link to go to `localhost:8080/contact`), the app renders the new route without reloading.
-However, when we go to a route *before* going to the index (go straight to `localhost:8080/contact`), we are trying to access a static route from the server, but the only static route on our server is the index (because the Dioxus frontend is a Single Page Application) and it will fail unless we redirect all missing routes to the index.
+这将指示 `dx serve` 将任何未知路由重定向到索引，然后由路由器解析。
+路由器在客户端工作。如果我们通过索引路由连接（例如，`localhost:8080`），然后单击链接转到 `localhost:8080/contact`), 应用程序将渲染新路由而不重新加载。
+但是，当我们在转到索引之前访问路由（直接转到 `localhost:8080/contact`) 时，我们试图从服务器访问静态路由，但我们服务器上的唯一静态路由是索引（因为 Dioxus 前端是单页应用程序），除非我们将所有缺失的路由重定向到索引，否则它将失败。
 
-This book is intended to get you up to speed with Dioxus Router. It is split
-into two sections:
+本书旨在让你快速了解 Dioxus 路由器。它分为两个部分：
 
-1. The [reference](reference/index.md) section explains individual features in 
-   depth. You can read it from start to finish, or you can read individual chapters 
-   in whatever order you want.
-2. If you prefer a learning-by-doing approach, you can check out the 
-   _[example project](example/index.md)_. It guides you through 
-   creating a dioxus app, setting up the router, and using some of its 
-   functionality.
+1. [reference](reference/index.md) 部分深入解释了各个功能。你可以从头到尾阅读它，或者你可以按照你想要的顺序阅读各个章节。
+2. 如果你更喜欢边做边学的方法，你可以查看 _[example project](example/index.md)_。它指导你创建 Dioxus 应用程序，设置路由器以及使用一些功能。
 
-> Please note that this is not the only documentation for the Dioxus Router. You
-> can also check out the [API Docs](https://docs.rs/dioxus-router/).
+> 请注意，这不是 Dioxus 路由器的唯一文档。你还可以查看 [API Docs](https://docs.rs/dioxus-router/)。

@@ -1,12 +1,12 @@
-# Props Migration
+# 属性迁移
 
-In dioxus 0.4, props are passed into the component through the scope. In dioxus 0.5, props are passed into the component through the props struct directly.
+在 Dioxus 0.4 中，属性通过作用域传递给组件。在 Dioxus 0.5 中，属性直接通过属性结构体传递给组件。
 
-## Owned Props
+## 拥有属性
 
-The props were borrowed with the lifetime from the scope. The props are cloned every render, and passed into the component as an owned value.
+属性是通过作用域的生存期借用的。属性在每次渲染时都会被克隆，并作为拥有值传递给组件。
 
-Dioxus 0.4:
+Dioxus 0.4：
 ```rust
 #[component]
 fn Comp(cx: Scope, name: String) -> Element {
@@ -18,22 +18,22 @@ fn Comp(cx: Scope, name: String) -> Element {
     })
 }
 ```
-Dioxus 0.5:
+Dioxus 0.5：
 ```rust
 {{#include src/doc_examples/migration_props.rs:owned_props}}
 ```
 
-Because props are cloned every render, making props Copy is recommended. You can easily make a field Copy by accepting `ReadOnlySignal<T>` instead of `T` in the props struct:
+因为属性在每次渲染时都会被克隆，所以建议将属性设置为 `Copy`。你可以通过在属性结构体中接受 ``ReadOnlySignal<T>`` 而不是 ``T`` 来轻松地将字段设置为 `Copy`：
 
 ```rust
 {{#include src/doc_examples/migration_props.rs:copy_props}}
 ```
 
-## Borrowed Props
+## 借用属性
 
-Borrowed props are removed in dioxus 0.5. Mapped signals can act similarly to borrowed props if your props are borrowed from state.
+在 Dioxus 0.5 中，借用属性已被移除。如果你的属性是从状态借用的，映射信号可以类似于借用属性。
 
-Dioxus 0.4:
+Dioxus 0.4：
 ```rust
 fn Parent(cx: Scope) -> Element {
     let state = use_state(cx, || (1, "World".to_string()));
@@ -52,16 +52,16 @@ fn BorrowedComp<'a>(cx: Scope<'a>, name: &'a str) -> Element<'a> {
 }
 ```
 
-Dioxus 0.5:
+Dioxus 0.5：
 ```rust
 {{#include src/doc_examples/migration_props.rs:borrowed_props}}
 ```
 
-## Manual Props
+## 手动属性
 
-Manual prop structs in dioxus 0.5 need to derive `Clone` in addition to `Props` and `PartialEq`:
+在 Dioxus 0.5 中，手动属性结构体除了需要派生 ``Props`` 和 ``PartialEq`:` 之外，还需要派生 ``Clone``:
 
-Dioxus 0.4:
+Dioxus 0.4：
 ```rust
 #[derive(Props, PartialEq)]
 struct ManualProps {
@@ -76,7 +76,7 @@ fn ManualPropsComponent(cx: Scope<ManualProps>) -> Element {
 }
 ```
 
-Dioxus 0.5:
+Dioxus 0.5：
 ```rust
 {{#include src/doc_examples/migration_props.rs:manual_props}}
 ```

@@ -1,10 +1,10 @@
-# Interactivity
+# 交互性
 
-In this chapter, we will add a preview for articles you hover over or links you focus on.
+本章我们将添加一个预览功能，当您将鼠标悬停在文章上或将焦点放在链接上时，预览功能就会出现。
 
-## Creating a Preview
+## 创建预览
 
-First, let's split our app into a Stories component on the left side of the screen, and a preview component on the right side of the screen:
+首先，我们将应用程序拆分为屏幕左侧的“故事”组件和屏幕右侧的“预览”组件：
 
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:app_v1}}
@@ -16,33 +16,33 @@ DemoFrame {
 }
 ```
 
-## Event Handlers
+## 事件处理程序
 
-Next, we need to detect when the user hovers over a section or focuses a link. We can use an [event listener](../reference/event_handlers.md) to listen for the hover and focus events.
+接下来，我们需要检测用户何时将鼠标悬停在某个部分或将焦点放在链接上。我们可以使用 [event listener](../reference/event_handlers.md) 来监听悬停和聚焦事件。
 
-Event handlers are similar to regular attributes, but their name usually starts with `on`- and they accept closures as values. The closure will be called whenever the event it listens for is triggered. When an event is triggered, information about the event is passed to the closure through the [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) structure.
+事件处理程序类似于常规属性，但它们的名字通常以 `on` 开头，并且它们接受闭包作为值。当监听的事件触发时，闭包就会被调用。当事件触发时，关于事件的信息会通过 [Event](https://docs.rs/dioxus/latest/dioxus/prelude/struct.Event.html) 结构传递给闭包。
 
-Let's create a [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) event listener in the `StoryListing` component:
+让我们在 `StoryListing` 组件中创建一个 [`onmouseenter`](https://docs.rs/dioxus/latest/dioxus/events/fn.onmouseenter.html) 事件监听器：
 
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:story_listing_listener}}
 ```
 
-> You can read more about Event Handlers in the [Event Handler reference](../reference/event_handlers.md)
+> 您可以在 [Event Handler reference](../reference/event_handlers.md) 中阅读更多关于事件处理程序的信息
 
-## State
+## 状态
 
-So far our components have had no state like normal rust functions. To make our application change when we hover over a link we need state to store the currently hovered link in the root of the application.
+到目前为止，我们的组件还没有像普通的 Rust 函数那样拥有状态。为了让应用程序在我们将鼠标悬停在链接上时发生改变，我们需要在应用程序的根部创建状态来存储当前悬停的链接。
 
-You can create state in dioxus using hooks. Hooks are Rust functions you call in a constant order in a component that add additional functionality to the component.
+您可以在 Dioxus 中使用钩子创建状态。钩子是您在组件中按特定顺序调用的 Rust 函数，它们为组件添加了额外的功能。
 
-In this case, we will use the `use_context_provider` and `use_context` hooks:
+在本例中，我们将使用 `use_context_provider` 和 `use_context` 钩子：
 
-- You can provide a closure to `use_context_provider` that determines the initial value of the shared state and provides the value to all child components
-- You can then use the `use_context` hook to read and modify that state in the `Preview` and `StoryListing` components
-- When the value updates, the `Signal` will cause the component to re-render, and provides you with the new value
+- 您可以向 `use_context_provider` 提供一个闭包，该闭包确定共享状态的初始值，并将该值提供给所有子组件。
+- 然后，您可以使用 `use_context` 钩子在 `Preview` 和 `StoryListing` 组件中读取和修改该状态。
+- 当值更新时，`Signal` 将导致组件重新渲染，并为您提供新的值。
 
-> Note: You should prefer local state hooks like use_signal or use_signal_sync when you only use state in one component. Because we use state in multiple components, we can use a [global state pattern](../reference/context.md)
+> 注意：如果您只在一个组件中使用状态，则应该优先使用局部状态钩子，如 use_signal 或 use_signal_sync。因为我们在多个组件中使用状态，所以可以使用 [global state pattern](../reference/context.md)。
 
 ```rust
 {{#include src/doc_examples/hackernews_state.rs:shared_state_app}}
@@ -62,31 +62,31 @@ DemoFrame {
 }
 ```
 
-> You can read more about Hooks in the [Hooks reference](../reference/hooks.md)
+> 您可以在 [Hooks reference](../reference/hooks.md) 中阅读更多关于钩子的信息
 
-### The Rules of Hooks
+### 钩子的规则
 
-Hooks are a powerful way to manage state in Dioxus, but there are some rules you need to follow to insure they work as expected. Dioxus uses the order you call hooks to differentiate between hooks. Because the order you call hooks matters, you must follow these rules:
+钩子是管理 Dioxus 中状态的一种强大方法，但您需要遵循一些规则以确保它们按预期工作。Dioxus 使用您调用钩子的顺序来区分钩子。由于您调用钩子的顺序很重要，因此您必须遵循以下规则：
 
-1. Hooks may be only used in components or other hooks (we'll get to that later)
-2. On every call to the component function
-   1. The same hooks must be called
-   2. In the same order
-3. Hooks name's should start with `use_` so you don't accidentally confuse them with regular functions
+1. 钩子只能在组件或其他钩子中使用（我们将在后面介绍）。
+2. 在每次调用组件函数时：
+   1. 必须调用相同的钩子。
+   2. 必须按相同的顺序调用。
+3. 钩子的名字应该以 `use_` 开头，这样您就不会意外地将它们与常规函数混淆。
 
-These rules mean that there are certain things you can't do with hooks:
+这些规则意味着您无法用钩子做某些事情：
 
-#### No Hooks in Conditionals
+#### 在条件语句中使用钩子
 ```rust
 {{#include src/doc_examples/hooks_bad.rs:conditional}}
 ```
 
-#### No Hooks in Closures
+#### 在闭包中使用钩子
 ```rust
 {{#include src/doc_examples/hooks_bad.rs:closure}}
 ```
 
-#### No Hooks in Loops
+#### 在循环中使用钩子
 ```rust
 {{#include src/doc_examples/hooks_bad.rs:loop}}
 ```

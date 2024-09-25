@@ -1,35 +1,25 @@
-# History Buttons
+# 历史按钮
 
-Some platforms, like web browsers, provide users with an easy way to navigate
-through an app's history. They have UI elements or integrate with the OS.
+一些平台，比如网页浏览器，为用户提供了一种轻松浏览应用程序历史记录的方法。它们具有 UI 元素或与操作系统集成。
 
-However, native platforms usually don't provide such amenities, which means that
-apps wanting users to have access to them, need to implement them. For this
-reason, the router comes with two components, which emulate a browser's back and
-forward buttons:
+但是，原生平台通常不提供这样的便利设施，这意味着希望用户能够访问历史记录的应用程序需要自行实现。出于这个原因，路由器附带了两个组件，用于模拟浏览器的后退和前进按钮：
 
 - [`GoBackButton`]
 - [`GoForwardButton`]
 
-> If you want to navigate through the history programmatically, take a look at
-> [`programmatic navigation`](./navigation/programmatic.md).
+> 如果你想以编程方式浏览历史记录，请查看 [`programmatic navigation`](./navigation/programmatic.md)。
 
 ```rust
 {{#include src/doc_examples/history_buttons.rs:history_buttons}}
 ```
 
-As you might know, browsers usually disable the back and forward buttons if
-there is no history to navigate to. The router's history buttons try to do that
-too, but depending on the [history provider] that might not be possible.
+如你所知，浏览器通常在没有历史记录可浏览时禁用后退和前进按钮。路由器的历史按钮也试图这样做，但根据 [历史提供者] 情况，这可能无法实现。
 
-Importantly, neither `WebHistory` supports that feature.
-This is due to limitations of the browser History API.
+重要的是，[`WebHistory`] 均不支持该功能。这是由于浏览器历史 API 的限制。
 
-However, in both cases, the router will just ignore button presses, if there is
-no history to navigate to.
+但是，在这两种情况下，如果没有任何历史记录可供浏览，路由器将忽略按钮按下操作。
 
-Also, when using `WebHistory`, the history buttons might
-navigate a user to a history entry outside your app.
+此外，当使用 [`WebHistory`] 时，历史按钮可能会将用户导航到应用程序之外的历史记录条目。
 
 [`GoBackButton`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoBackButton.html
 [`GoForwardButton`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.GoForwardButton.html

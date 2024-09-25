@@ -1,25 +1,24 @@
-# Create a Project
+# 创建项目
 
-Once you have the Dioxus CLI installed, you can use it to create your own project!
+安装完 Dioxus CLI 后，你可以用它来创建自己的项目！
 
-## Initializing a project
+## 初始化项目
 
-First, run the `dx new` command to create a new project.
+首先，运行 `dx new` 命令来创建一个新项目。
 
-> It clones this [template](https://github.com/DioxusLabs/dioxus-template), which is used to create dioxus apps.
+> 它会克隆这个 [template](https://github.com/DioxusLabs/dioxus-template)，用于创建 Dioxus 应用程序。
 >
-> You can create your project from a different template by passing the `template` argument:
+> 你可以通过传递 `template` 参数，从不同的模板创建项目：
 > ```
 > dx new --template gh:dioxuslabs/dioxus-template
 > ```
 
-Next, navigate into your new project using `cd project-name`, or simply opening it in an IDE.
+接下来，使用 `cd project-name` 进入你的新项目，或者直接在 IDE 中打开它。
 
-> Make sure the WASM target is installed before running the projects.
-> You can install the WASM target for rust using rustup:
+> 确保在运行项目之前安装了 WASM 目标。
+> 你可以使用 rustup 安装 WASM 目标：
 > ```
 > rustup target add wasm32-unknown-unknown
 > ```
 
-Finally, serve your project with `dx serve`! The CLI will tell you the address it is serving on, along with additional
-info such as code warnings.
+最后，使用 `dx serve` 启动你的项目！CLI 会告诉你它正在服务的地址，以及代码警告等其他信息。

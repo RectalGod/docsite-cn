@@ -1,10 +1,10 @@
-# Publishing
+# 发布
 
-After you have build your application, you will need to publish it somewhere. This reference will outline different methods of publishing your desktop or web application.
+在构建完应用后，你需要将其发布到某个地方。本参考将概述发布桌面或 Web 应用的不同方法。
 
-## Web: Publishing with GitHub Pages
+## Web：使用 GitHub Pages 发布
 
-Edit your `Dioxus.toml` to point your `out_dir` to the `docs` folder and the `base_path` to the name of your repo:
+编辑你的 `Dioxus.toml`  以将你的 `out_dir` 指向 `docs` 文件夹，并将 `base_path` 设置为你的仓库名称：
 
 ```toml
 [application]
@@ -15,26 +15,26 @@ out_dir = "docs"
 base_path = "your_repo"
 ```
 
-Then build your app and publish it to Github:
+然后构建你的应用并将其发布到 GitHub：
 
-- Make sure GitHub Pages is set up for your repo to publish any static files in the docs directory
-- Build your app with:
+- 确保 GitHub Pages 已为你的仓库设置好，以便发布 docs 目录中的所有静态文件
+- 使用以下命令构建你的应用：
 ```sh
 dx build --release
 ```
-- Make a copy of your `docs/index.html` file and rename the copy to `docs/404.html` so that your app will work with client-side routing
-- Add and commit with git
-- Push to GitHub
+- 复制你的 `docs/index.html` 文件，并将副本重命名为 `docs/404.html`，以便你的应用可以与客户端路由一起工作
+- 使用 git 添加并提交
+- 推送到 GitHub
 
-## Desktop: Creating an installer
+## 桌面：创建安装程序
 
-Dioxus desktop app uses your operating system's WebView library, so it's portable to be distributed for other platforms.
+Dioxus 桌面应用使用你操作系统的 WebView 库，因此它可以移植到其他平台上进行分发。
 
-In this section, we'll cover how to bundle your app for macOS, Windows, and Linux.
+在本节中，我们将介绍如何将你的应用打包到 macOS、Windows 和 Linux。
 
-## Preparing your application for bundling
+## 准备你的应用以进行打包
 
-Depending on your platform, you may need to add some additional code to your `main.rs` file to make sure your app is ready for bundling. On Windows, you'll need to add the `#![windows_subsystem = "windows"]` attribute to your `main.rs` file to hide the terminal window that pops up when you run your app. **If you're developing on Windows, only use this when bundling.** It will disable the terminal, so you will not get logs of any kind. You can gate it behind a feature, like so:
+根据你的平台，你可能需要在你的 `main.rs` 文件中添加一些额外的代码，以确保你的应用已准备好进行打包。在 Windows 上，你需要在你的 `main.rs` 文件中添加 `#![windows_subsystem = "windows"]` 属性，以隐藏运行应用时弹出的终端窗口。**如果你在 Windows 上开发，仅在打包时使用此方法。** 这将禁用终端，因此你将无法获得任何日志。你可以将其置于某个特性后面，如下所示：
 
 ```toml
 # Cargo.toml
@@ -42,15 +42,15 @@ Depending on your platform, you may need to add some additional code to your `ma
 bundle = []
 ```
 
-And then your `main.rs`:
+然后你的 `main.rs`:
 
 ```rust
 #![cfg_attr(feature = "bundle", windows_subsystem = "windows")]
 ```
 
-## Adding assets to your application
+## 将资源添加到你的应用中
 
-If you want to bundle assets with your application, you can either use them with the `manganis` crate (covered more in the [assets](../reference/assets.md) page), or you can include them in your `Dioxus.toml` file:
+如果你想将资源打包到你的应用中，你可以使用 `manganis` crate（在 [assets](../reference/assets.md) 页面中详细介绍），或者将它们包含在你的 `Dioxus.toml` 文件中：
 
 ```toml
 [bundle]
@@ -58,25 +58,24 @@ If you want to bundle assets with your application, you can either use them with
 resources = ["main.css", "header.svg", "**/*.png"]
 ```
 
-## Install `dioxus CLI`
+## 安装 `dioxus CLI`
 
-The first thing we'll do is install the [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli). This extension to cargo will make it very easy to package our app for the various platforms.
+我们要做的第一件事是安装 [dioxus-cli](https://github.com/DioxusLabs/dioxus/tree/v0.5/packages/cli)。此 cargo 扩展将使我们非常轻松地为各种平台打包我们的应用。
 
-To install, simply run
+要安装，只需运行：
 
 `cargo install dioxus-cli`
 
-## Building
+## 构建
 
-To bundle your application you can simply run `dx bundle --release` (also add `--features bundle` if you're using that, see the [this](#preparing-your-application-for-bundling) for more) to produce a final app with all the optimizations and assets builtin.
+要打包你的应用，你可以简单地运行 `dx bundle --release`（如果你在使用，还需要添加 `--features bundle`，请参阅 [this](#preparing-your-application-for-bundling) 获取更多信息），以生成一个包含所有优化和资源的最终应用。
 
-Once you've ran the command, your app should be accessible in `dist/bundle/`.
+运行完该命令后，你的应用应该可以在 `dist/bundle/` 中访问。
 
-For example, a macOS app would look like this:
+例如，macOS 应用将如下所示：
 
 ![Published App](public/static/publish.png)
 
-Nice! And it's only 4.8 Mb – extremely lean!! Because Dioxus leverages your platform's native WebView, Dioxus apps are extremely memory efficient and won't waste your battery.
+很好！它只有 4.8 MB – 非常精简！由于 Dioxus 利用了你的平台的原生 WebView，Dioxus 应用非常节省内存，不会浪费你的电池。
 
-> Note: not all CSS works the same on all platforms. Make sure to view your app's CSS on each platform – or web browser (Firefox, Chrome, Safari) before publishing.
-
+> 注意：并非所有 CSS 在所有平台上都以相同的方式工作。请确保在发布之前查看你的应用的 CSS 在每个平台上 – 或 Web 浏览器（Firefox、Chrome、Safari）上的显示效果。

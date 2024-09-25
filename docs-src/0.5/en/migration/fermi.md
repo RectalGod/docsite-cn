@@ -1,11 +1,11 @@
 # Fermi
 
-In dioxus 0.5, fermi atoms have been replaced with global signals and included in the main dioxus library.
+在 Dioxus 0.5 中，Fermi 原子已被全局信号取代，并包含在主 Dioxus 库中。
 
 
-The new global signals can be used directly without hooks and include additional functionality like global memos.
+新的全局信号可以直接使用，无需钩子，并包括额外的功能，例如全局备忘录。
 
-Dioxus 0.4:
+Dioxus 0.4：
 ```rust
 use dioxus::prelude::*;
 use fermi::*;
@@ -28,14 +28,14 @@ fn app(cx: Scope) -> Element {
 }
 ```
 
-Dioxus 0.5:
+Dioxus 0.5：
 ```rust
 {{#include src/doc_examples/migration_fermi.rs:intro}}
 ```
 
-## Memos
+## 备忘录
 
-Dioxus 0.5 introduces global memos which can be used to store computed values globally.
+Dioxus 0.5 引入了全局备忘录，可用于全局存储计算值。
 
 ```rust
 {{#include src/doc_examples/migration_fermi.rs:memos}}

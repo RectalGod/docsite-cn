@@ -1,35 +1,23 @@
-# Components
+# 组件
 
-Just like you wouldn't want to write a complex program in a single, long, `main` function, you shouldn't build a complex UI in a single `App` function. Instead, you should break down the functionality of an app in logical parts called components.
+就像你不会想在一个单独的、很长的 `main` 函数中编写一个复杂的程序一样，你也不应该在一个单独的 `App` 函数中构建一个复杂的 UI。相反，你应该将应用程序的功能分解成称为组件的逻辑部分。
 
-A component is a Rust function, named in UpperCammelCase, that either takes no parameters or a properties struct and returns an `Element` describing the UI it wants to render.
+组件是一个 Rust 函数，以 UpperCammelCase 命名，它要么不接受参数，要么接受一个属性结构体，并返回一个 `Element` 来描述它想要渲染的 UI。
 
 ```rust, no_run
 {{#include src/doc_examples/hello_world_desktop.rs:component}}
-```
-
-> You'll probably want to add `#![allow(non_snake_case)]` to the top of your crate to avoid warnings about UpperCammelCase component names
-
-A Component is responsible for some rendering task – typically, rendering an isolated part of the user interface. For example, you could have an `About` component that renders a short description of Dioxus Labs:
-
-```rust, no_run
+[[[CODE_BLOCK_aa4beb2c-e1a1-43cd-9b99-6abd5fbdfe9a]]]rust, no_run
 {{#include src/doc_examples/components.rs:About}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_e58e5d4d-0376-42d3-b59a-e0750f096a02]]]inject-dioxus
 DemoFrame {
 	components::About {}
 }
-```
-
-Then, you can render your component in another component, similarly to how elements are rendered:
-
-```rust, no_run
+[[[CODE_BLOCK_4d184f05-df08-4129-92dd-ec255f98cd27]]]rust, no_run
 {{#include src/doc_examples/components.rs:App}}
-```
-```inject-dioxus
+[[[CODE_BLOCK_0bddb3e4-6493-4276-9133-d8994a97ca5a]]]inject-dioxus
 DemoFrame {
 	components::App {}
 }
 ```
 
-> At this point, it might seem like components are nothing more than functions. However, as you learn more about the features of Dioxus, you'll see that they are actually more powerful!
+> 在这一点上，组件似乎只不过是函数而已。然而，当你更多地了解 Dioxus 的功能时，你会发现它们实际上更加强大！

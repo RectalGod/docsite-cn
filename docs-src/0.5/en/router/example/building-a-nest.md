@@ -1,99 +1,85 @@
-# Building a Nest
+# 构建一个巢穴
 
-In this chapter, we will begin to build the blog portion of our site which will
-include links, nested routes, and route parameters.
+本章我们将开始构建我们网站的博客部分，这将包括链接、嵌套路由和路由参数。
 
-## Site Navigation
+## 网站导航
 
-Our site visitors won't know all the available pages and blogs on our site so we
-should provide a navigation bar for them. Our navbar will be a list of links going between our pages.
+我们的网站访问者不会知道我们网站上所有可用的页面和博客，所以我们应该为他们提供一个导航栏。我们的导航栏将是一个链接列表，连接着我们的页面。
 
-We want our navbar component to be rendered on several different pages on our site. Instead of duplicating the code, we can create a component that wraps all children routes. This is called a layout component. To tell the router where to render the child routes, we use the [`Outlet`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html) component.
+我们希望我们的导航栏组件在我们网站上的几个不同页面上渲染。为了避免重复代码，我们可以创建一个组件来包裹所有子路由。这被称为布局组件。为了告诉路由器在哪里渲染子路由，我们使用[`Outlet`](https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Outlet.html) 组件。
 
-Let's create a new `NavBar` component:
+让我们创建一个新的 `NavBar` 组件：
 
 ```rust
 {{#include src/doc_examples/nested_routes.rs:nav}}
 ```
 
-Next, let's add our `NavBar` component as a layout to our Route enum:
+接下来，让我们将我们的 `NavBar` 组件作为布局添加到我们的 Route 枚举中：
 
 ```rust
 {{#include src/doc_examples/nested_routes.rs:router}}
 ```
 
-To add links to our `NavBar`, we could always use an HTML anchor element but that has two issues:
+为了向我们的 `NavBar` 添加链接，我们始终可以使用 HTML 锚元素，但这有两个问题：
 
-1. It causes a full-page reload
-2. We can accidentally link to a page that doesn't exist
+1. 它会导致整个页面重新加载
+2. 我们可能会意外链接到一个不存在的页面
 
-Instead, we want to use the [`Link`] component provided by Dioxus Router.
+相反，我们想要使用 Dioxus Router 提供的 [`Link`] 组件。
 
-The [`Link`] is similar to a regular `<a>` tag. It takes a target and children.
+[`Link`] 类似于一个普通的 `<a>` 标签。它接受一个目标和子节点。
 
-Unlike a regular `<a>` tag, we can pass in our Route enum as the target. Because we annotated our routes with the `#[route(path)]` attribute, the [`Link`] will know how to generate the correct URL. If we use the Route enum, the rust compiler will prevent us from linking to a page that doesn't exist.
+与普通的 `<a>` 标签不同，我们可以将我们的 Route 枚举作为目标传递进去。因为我们在路由上标注了 `#[route(path)]` 属性，[`Link`] 将知道如何生成正确的 URL。如果我们使用 Route 枚举，Rust 编译器将阻止我们链接到不存在的页面。
 
-Let's add our links:
+让我们添加我们的链接：
 
 ```rust
 {{#include src/doc_examples/links.rs:nav}}
 ```
 
-> Using this method, the [`Link`] component only works for links within our
-> application. To learn more about navigation targets see
+> 使用这种方法，[`Link`] 组件仅适用于我们应用程序内的链接。要了解更多关于导航目标的信息，请参阅
 > [here](./navigation-targets.md).
 
-Now you should see a list of links near the top of your page. Click on one and
-you should seamlessly travel between pages.
+现在，您应该在页面顶部附近看到一个链接列表。点击其中一个，您应该能够无缝地在页面之间跳转。
 
-## URL Parameters and Nested Routes
+## URL 参数和嵌套路由
 
-Many websites such as GitHub put parameters in their URL. For example,
-`https://github.com/DioxusLabs` utilizes the text after the domain to
-dynamically search and display content about an organization.
+许多网站，如 GitHub，会在他们的 URL 中放置参数。例如，`https://github.com/DioxusLabs` 使用域名后面的文本动态地搜索和显示关于组织的信息。
 
-We want to store our blogs in a database and load them as needed. We also
-want our users to be able to send people a link to a specific blog post.
-Instead of listing all of the blog titles at compile time, we can make a dynamic route.
+我们希望将我们的博客存储在数据库中，并在需要时加载它们。我们还想让我们的用户能够将指向特定博客文章的链接发送给别人。与其在编译时列出所有博客标题，我们可以创建一个动态路由。
 
-We could utilize a search page that loads a blog when clicked but then our users
-won't be able to share our blogs easily. This is where URL parameters come in.
+我们可以利用一个搜索页面，在点击时加载博客，但这会让我们的用户难以分享我们的博客。这就是 URL 参数的用武之地。
 
-The path to our blog will look like `/blog/myBlogPage`, `myBlogPage` being the
-URL parameter.
+我们博客的路径将类似于 `/blog/myBlogPage`，`myBlogPage` 是 URL 参数。
 
-First, let's create a layout component (similar to the navbar) that wraps the blog content. This allows us to add a heading that tells the user they are on the blog.
+首先，让我们创建一个布局组件（类似于导航栏），它包裹着博客内容。这允许我们添加一个标题，告诉用户他们在博客上。
 
 ```rust
 {{#include src/doc_examples/dynamic_route.rs:blog}}
 ```
 
-Now we'll create another index component, that'll be displayed when no blog post
-is selected:
+现在，我们将创建另一个索引组件，它将在没有选择博客文章时显示：
 
 ```rust
 {{#include src/doc_examples/dynamic_route.rs:blog_list}}
 ```
 
-We also need to create a component that displays an actual blog post. This component will accept the URL parameters as props:
+我们还需要创建一个组件来显示实际的博客文章。这个组件将接受 URL 参数作为 props：
 
 ```rust
 {{#include src/doc_examples/dynamic_route.rs:blog_post}}
 ```
 
-Finally, let's tell our router about those components:
+最后，让我们告诉我们的路由器这些组件：
 
 ```rust
 {{#include src/doc_examples/dynamic_route.rs:router}}
 ```
 
-That's it! If you head to `/blog/1` you should see our sample post.
+就这样！如果您访问 `/blog/1`，您应该会看到我们的示例文章。
 
-## Conclusion
+## 结论
 
-In this chapter, we utilized Dioxus Router's Link, and Route Parameter
-functionality to build the blog portion of our application. In the next chapter,
-we will go over how navigation targets (like the one we passed to our links)
-work.
+在本章中，我们利用了 Dioxus Router 的 Link 和 Route Parameter 功能来构建我们应用程序的博客部分。在下一章中，我们将介绍导航目标（就像我们传递给链接的那个）是如何工作的。
 
 [`Link`]: https://docs.rs/dioxus-router/latest/dioxus_router/components/fn.Link.html

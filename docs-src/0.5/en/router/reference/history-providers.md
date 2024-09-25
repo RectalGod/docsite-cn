@@ -1,21 +1,18 @@
-# History Providers
+# 历史提供者
 
-[`HistoryProvider`]s are used by the router to keep track of the navigation history
-and update any external state (e.g. the browser's URL).
+[`HistoryProvider`] 用于路由器跟踪导航历史并更新任何外部状态（例如浏览器的 URL）。
 
-The router provides two [`HistoryProvider`]s, but you can also create your own.
-The two default implementations are:
+路由器提供两个 [`HistoryProvider`]，但您也可以创建自己的。
+两个默认实现是：
 
-- The [`MemoryHistory`] is a custom implementation that works in memory.
-- The [`LiveviewHistory`] is a custom implementation that works with the liveview renderer.
-- The [`WebHistory`] integrates with the browser's URL.
+- [`MemoryHistory`] 是一个在内存中工作的自定义实现。
+- [`LiveviewHistory`] 是一个与 liveview 渲染器一起工作的自定义实现。
+- [`WebHistory`] 与浏览器的 URL 集成。
 
-By default, the router uses the [`MemoryHistory`]. It might be changed to use
-[`WebHistory`] when the `web` feature is active, but that is not guaranteed.
+默认情况下，路由器使用 [`MemoryHistory`]。当 `web` 功能处于活动状态时，它可能会更改为使用 [`WebHistory`]，但这并不保证。
 
-You can override the default history:
+您可以覆盖默认历史记录：
 
 ```rust
 {{#include src/doc_examples/history_provider.rs:app}}
 ```
-

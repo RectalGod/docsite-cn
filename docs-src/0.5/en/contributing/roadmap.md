@@ -1,138 +1,138 @@
-# Roadmap & Feature-set
+# 路线图和功能集
 
-This feature set and roadmap can help you decide if what Dioxus can do today works for you.
+此功能集和路线图可以帮助您决定 Dioxus 今天能做的事情是否适合您。
 
-If a feature that you need doesn't exist or you want to contribute to projects on the roadmap, feel free to get involved by [joining the discord](https://discord.gg/XgGxMSkvUM).
+如果您需要但尚未实现的功能，或者您想为路线图上的项目做出贡献，请随时通过[joining the discord](https://discord.gg/XgGxMSkvUM)参与。
 
-Generally, here's the status of each platform:
+一般来说，以下列出了每个平台的状态：
 
-- **Web**: Dioxus is a great choice for pure web-apps – especially for CRUD/complex apps. However, it does lack the ecosystem of React, so you might be missing a component library or some useful hook.
+- **Web**: Dioxus 是纯 Web 应用的绝佳选择，尤其是对于 CRUD/复杂应用。但是，它缺乏 React 的生态系统，因此您可能会缺少组件库或一些有用的钩子。
 
-- **SSR**: Dioxus is a great choice for pre-rendering, hydration, and rendering HTML on a web endpoint. Be warned – the VirtualDom is not (currently) `Send + Sync`.
+- **SSR**: Dioxus 是预渲染、水合和在 Web 端点上渲染 HTML 的绝佳选择。请注意，VirtualDom 尚未 (目前) `Send + Sync`。
 
-- **Desktop**: You can build very competent single-window desktop apps right now. However, multi-window apps require support from Dioxus core and are not ready.
+- **桌面**: 您现在可以构建非常出色的单窗口桌面应用程序。但是，多窗口应用程序需要 Dioxus 核心支持，目前尚未准备就绪。
 
-- **Mobile**: Mobile support is very young. You'll be figuring things out as you go and there are not many support crates for peripherals.
+- **移动**: 移动支持非常年轻。您将边走边摸索，并且没有很多支持外围设备的箱子。
 
-- **LiveView**: LiveView support is very young. You'll be figuring things out as you go. Thankfully, none of it is too hard and any work can be upstreamed into Dioxus.
+- **LiveView**: LiveView 支持非常年轻。您将边走边摸索。幸运的是，这些都不太难，任何工作都可以上游到 Dioxus。
 
-## Features
+## 功能
 
 ---
 
-| Feature                   | Status | Description                                                          |
-|---------------------------|--------|----------------------------------------------------------------------|
-| Conditional Rendering     | x      | if/then to hide/show component                                       |
-| Map, Iterator             | x      | map/filter/reduce to produce rsx!                                    |
-| Keyed Components          | x      | advanced diffing with keys                                           |
-| Web                       | x      | renderer for web browser                                             |
-| Desktop (webview)         | x      | renderer for desktop                                                 |
-| Shared State (Context)    | x      | share state through the tree                                         |
-| Hooks                     | x      | memory cells in components                                           |
-| SSR                       | x      | render directly to string                                            |
-| Component Children        | x      | cx.children() as a list of nodes                                     |
-| Headless components       | x      | components that don't return real elements                           |
-| Fragments                 | x      | multiple elements without a real root                                |
-| Manual Props              | x      | Manually pass in props with spread syntax                            |
-| Controlled Inputs         | x      | stateful wrappers around inputs                                      |
-| CSS/Inline Styles         | x      | syntax for inline styles/attribute groups                            |
-| Custom elements           | x      | Define new element primitives                                        |
-| Suspense                  | x      | schedule future render from future/promise                           |
-| Integrated error handling | x      | Gracefully handle errors with ? syntax                               |
-| NodeRef                   | x      | gain direct access to nodes                                          |
-| Re-hydration              | x      | Pre-render to HTML to speed up first contentful paint                |
-| Jank-Free Rendering       | x      | Large diffs are segmented across frames for silky-smooth transitions |
-| Effects                   | x      | Run effects after a component has been committed to render           |
-| Portals                   | *      | Render nodes outside of the traditional tree structure               |
-| Cooperative Scheduling    | *      | Prioritize important events over non-important events                |
-| Server Components         | *      | Hybrid components for SPA and Server                                 |
-| Bundle Splitting          | i      | Efficiently and asynchronously load the app                          |
-| Lazy Components           | i      | Dynamically load the new components as the page is loaded            |
-| 1st class global state    | x      | redux/recoil/mobx on top of context                                  |
-| Runs natively             | x      | runs as a portable binary w/o a runtime (Node)                       |
-| Subtree Memoization       | x      | skip diffing static element subtrees                                 |
-| High-efficiency templates | x      | rsx! calls are translated to templates on the DOM's side             |
-| Compile-time correct      | x      | Throw errors on invalid template layouts                             |
-| Heuristic Engine          | x      | track component memory usage to minimize future allocations          |
-| Fine-grained reactivity   | i      | Skip diffing for fine-grain updates                                  |
+| 功能                  | 状态 | 描述                                                          |
+|-----------------------|--------|----------------------------------------------------------------------|
+| 条件渲染             | x      | if/then 隐藏/显示组件                                       |
+| 映射、迭代器          | x      | map/filter/reduce 生成 rsx!                                    |
+| 键控组件             | x      | 使用键进行高级差异化                                           |
+| Web                    | x      | 用于 Web 浏览器的渲染器                                             |
+| 桌面 (webview)         | x      | 用于桌面的渲染器                                                 |
+| 共享状态 (上下文)     | x      | 通过树共享状态                                         |
+| 钩子                    | x      | 组件中的内存单元                                           |
+| SSR                    | x      | 直接渲染为字符串                                            |
+| 组件子元素           | x      | cx.children() 作为节点列表                                     |
+| 无头组件             | x      | 不返回真实元素的组件                                          |
+| 片段                   | x      | 多个元素，没有真正的根                                |
+| 手动道具              | x      | 使用扩展语法手动传递道具                                    |
+| 受控输入             | x      | 输入的 stateful 包装器                                      |
+| CSS/内联样式          | x      | 内联样式/属性组的语法                                       |
+| 自定义元素           | x      | 定义新的元素基元                                        |
+| 悬念                   | x      | 从 future/promise 中调度未来的渲染                           |
+| 集成的错误处理       | x      | 使用 ? 语法优雅地处理错误                               |
+| NodeRef                | x      | 直接访问节点                                          |
+| 重新水合              | x      | 预渲染到 HTML 以加快首次内容绘制速度                |
+| 无卡顿渲染           | x      | 大量差异在帧之间分割，以实现流畅的过渡                  |
+| 效果                   | x      | 在组件提交渲染后运行效果                                |
+| 传送门                 | *      | 在传统的树结构之外渲染节点                                |
+| 协作调度            | *      | 优先处理重要事件，而非重要事件                               |
+| 服务器组件            | *      | SPA 和服务器的混合组件                                 |
+| 包捆绑                  | i      | 高效且异步地加载应用程序                          |
+| 延迟组件             | i      | 在页面加载时动态加载新组件                               |
+| 一级全局状态        | x      | 基于上下文的 redux/recoil/mobx                                  |
+| 本地运行             | x      | 作为便携式二进制文件运行，无需运行时 (Node)                       |
+| 子树记忆化          | x      | 跳过静态元素子树的差异化                                |
+| 高效模板              | x      | rsx! 调用在 DOM 端转换为模板                             |
+| 编译时正确          | x      | 在无效模板布局上抛出错误                                |
+| 启发式引擎          | x      | 跟踪组件内存使用情况，以最大程度地减少未来的分配          |
+| 细粒度反应性        | i      | 跳过细粒度更新的差异化                                  |
 
-- x = implemented and working
-- \* = actively being worked on
-- i = not yet implemented or being worked on
+- x = 已实现并正常工作
+- \* = 正在积极开发中
+- i = 尚未实现或正在开发中
 
-## Roadmap
+## 路线图
 
-These Features are planned for the future of Dioxus:
+这些功能计划用于 Dioxus 的未来：
 
-### Core
+### 核心
 
-- [x] Release of Dioxus Core
-- [x] Upgrade documentation to include more theory and be more comprehensive
-- [x] Support for HTML-side templates for lightning-fast dom manipulation
-- [ ] Support for multiple renderers for same virtualdom (subtrees)
-- [ ] Support for ThreadSafe (Send + Sync)
-- [ ] Support for Portals
+- [x] 发布 Dioxus 核心
+- [x] 将文档升级为包含更多理论并更加全面
+- [x] 支持用于闪电般快速的 DOM 操作的 HTML 端模板
+- [ ] 支持多个渲染器用于相同的 VirtualDom (子树)
+- [ ] 支持 ThreadSafe (Send + Sync)
+- [ ] 支持传送门
 
 ### SSR
 
-- [x] SSR Support + Hydration
-- [x] Integrated suspense support for SSR
+- [x] SSR 支持 + 水合
+- [x] 集成的 SSR 悬念支持
 
-### Desktop
+### 桌面
 
-- [ ] Declarative window management
-- [ ] Templates for building/bundling
-- [ ] Access to Canvas/WebGL context natively
+- [ ] 声明式窗口管理
+- [ ] 用于构建/捆绑的模板
+- [ ] 原生访问 Canvas/WebGL 上下文
 
-### Mobile
+### 移动
 
-- [ ] Mobile standard library
+- [ ] 移动标准库
   - [ ] GPS
-  - [ ] Camera
-  - [ ] filesystem
-  - [ ] Biometrics
+  - [ ] 相机
+  - [ ] 文件系统
+  - [ ] 生物识别
   - [ ] WiFi
-  - [ ] Bluetooth
-  - [ ] Notifications
-  - [ ] Clipboard
-- [ ] Animations
+  - [ ] 蓝牙
+  - [ ] 通知
+  - [ ] 剪贴板
+- [ ] 动画
 
-### Bundling (CLI)
+### 捆绑 (CLI)
 
-- [x] Translation from HTML into RSX
-- [x] Dev server
-- [x] Live reload
-- [x] Translation from JSX into RSX
-- [ ] Hot module replacement
-- [ ] Code splitting
-- [x] Asset macros
-- [x] Css pipeline
-- [x] Image pipeline
+- [x] 从 HTML 转换为 RSX
+- [x] 开发服务器
+- [x] 实时重新加载
+- [x] 从 JSX 转换为 RSX
+- [ ] 热模块替换
+- [ ] 代码分割
+- [x] 资产宏
+- [x] Css 管道
+- [x] 图片管道
 
-### Essential hooks
+### 基本钩子
 
-- [x] Router
-- [x] Global state management
-- [ ] Resize observer
+- [x] 路由器
+- [x] 全局状态管理
+- [ ] 大小观察器
 
-## Work in Progress
+## 正在开发中
 
-### Build Tool
+### 构建工具
 
-We are currently working on our own build tool called [Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli) which will support:
+我们目前正在开发自己的构建工具，名为[Dioxus CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli)，它将支持：
 
-- an interactive TUI
-- on-the-fly reconfiguration
-- hot CSS reloading
-- two-way data binding between browser and source code
-- an interpreter for `rsx!`
-- ability to publish to github/netlify/vercel
-- bundling for iOS/Desktop/etc
+- 交互式 TUI
+- 随时重新配置
+- 热 CSS 重新加载
+- 浏览器和源代码之间的双向数据绑定
+- 用于`rsx!`的解释器
+- 能够发布到 github/netlify/vercel
+- 用于 iOS/桌面/等的捆绑
 
-### Server Component Support
+### 服务器组件支持
 
-While not currently fully implemented, the expectation is that LiveView apps can be a hybrid between Wasm and server-rendered where only portions of a page are "live" and the rest of the page is either server-rendered, statically generated, or handled by the host SPA.
+虽然目前尚未完全实现，但预期 LiveView 应用程序可以在 Wasm 和服务器渲染之间进行混合，其中只有页面的某些部分是“实时”的，而页面的其余部分要么是服务器渲染的，要么是静态生成的，要么由主机 SPA 处理。
 
-### Native rendering
+### 本地渲染
 
-We are currently working on a native renderer for Dioxus using WGPU called [Blitz](https://github.com/DioxusLabs/blitz/). This will allow you to build apps that are rendered natively for iOS, Android, and Desktop.
+我们目前正在使用 WGPU 为 Dioxus 开发本地渲染器，名为[Blitz](https://github.com/DioxusLabs/blitz/)。这将使您能够构建针对 iOS、Android 和桌面本地渲染的应用程序。

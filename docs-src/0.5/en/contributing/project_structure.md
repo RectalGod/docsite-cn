@@ -1,50 +1,50 @@
-# Project Structure
+# 项目结构
 
-There are many packages in the Dioxus organization. This document will help you understand the purpose of each package and how they fit together.
+Dioxus 组织中包含许多包。本文档将帮助您了解每个包的目的及其相互关系。
 
-## Renderers
+## 渲染器
 
-- [Desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop): A Render that Runs Dioxus applications natively, but renders them with the system webview
-- [Mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile): A Render that Runs Dioxus applications natively, but renders them with the system webview. This is currently a copy of the desktop render
-- [Web](https://github.com/DioxusLabs/dioxus/tree/main/packages/Web): Renders Dioxus applications in the browser by compiling to WASM and manipulating the DOM
-- [Liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview): A Render that Runs on the server, and renders using a websocket proxy in the browser
-- [Plasmo](https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo): A Renderer that renders a HTML-like tree into a terminal
-- [TUI](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui): A Renderer that uses Plasmo to render a Dioxus application in a terminal
-- [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core): An experimental native renderer that renders a HTML-like tree using WGPU.
-- [Blitz](https://github.com/DioxusLabs/blitz): An experimental native renderer that uses Blitz-Core to render a Dioxus application using WGPU.
-- [SSR](https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr): A Render that Runs Dioxus applications on the server, and renders them to HTML
+- [Desktop](https://github.com/DioxusLabs/dioxus/tree/main/packages/desktop):  一个在本地运行 Dioxus 应用程序的渲染器，但使用系统 Webview 进行渲染。
+- [Mobile](https://github.com/DioxusLabs/dioxus/tree/main/packages/mobile):  一个在本地运行 Dioxus 应用程序的渲染器，但使用系统 Webview 进行渲染。目前，它是桌面渲染器的副本。
+- [Web](https://github.com/DioxusLabs/dioxus/tree/main/packages/Web): 通过编译成 WASM 并操作 DOM，在浏览器中渲染 Dioxus 应用程序。
+- [Liveview](https://github.com/DioxusLabs/dioxus/tree/main/packages/liveview):  一个在服务器上运行的渲染器，使用 websocket 代理在浏览器中进行渲染。
+- [Plasmo](https://github.com/DioxusLabs/blitz/tree/master/packages/plasmo):  一个将 HTML 类树渲染到终端的渲染器。
+- [TUI](https://github.com/DioxusLabs/blitz/tree/master/packages/dioxus-tui): 一个使用 Plasmo 在终端中渲染 Dioxus 应用程序的渲染器。
+- [Blitz-Core](https://github.com/DioxusLabs/blitz/tree/master/packages/blitz-core):  一个使用 WGPU 渲染 HTML 类树的实验性原生渲染器。
+- [Blitz](https://github.com/DioxusLabs/blitz):  一个使用 Blitz-Core 和 WGPU 渲染 Dioxus 应用程序的实验性原生渲染器。
+- [SSR](https://github.com/DioxusLabs/dioxus/tree/main/packages/ssr):  一个在服务器上运行 Dioxus 应用程序并将其渲染为 HTML 的渲染器。
 
-## State Management/Hooks
+## 状态管理/钩子
 
-- [Hooks](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks): A collection of common hooks for Dioxus applications
-- [Signals](https://github.com/DioxusLabs/dioxus/tree/main/packages/signals): A experimental state management library for Dioxus applications. This currently contains a `Copy` version of Signal
-- [SDK](https://github.com/DioxusLabs/sdk): A collection of platform agnostic hooks to interact with system interfaces (The clipboard, camera, etc.).
-- [Fermi](https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi): A global state management library for Dioxus applications.
-- [Router](https://github.com/DioxusLabs/dioxus/tree/main/packages/router): A client-side router for Dioxus applications
+- [Hooks](https://github.com/DioxusLabs/dioxus/tree/main/packages/hooks): Dioxus 应用程序中常用钩子的集合。
+- [Signals](https://github.com/DioxusLabs/dioxus/tree/main/packages/signals):  Dioxus 应用程序的实验性状态管理库。目前，它包含一个 `Copy` 版本的 Signal。
+- [SDK](https://github.com/DioxusLabs/sdk):  一个与系统接口（剪贴板、相机等）进行交互的平台无关钩子集合。
+- [Fermi](https://github.com/DioxusLabs/dioxus/tree/main/packages/fermi):  Dioxus 应用程序的全局状态管理库。
+- [Router](https://github.com/DioxusLabs/dioxus/tree/main/packages/router):  Dioxus 应用程序的客户端路由器。
 
-## Core utilities
+## 核心工具
 
-- [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core): The core virtual dom implementation every Dioxus application uses
-  - You can read more about the architecture of the core [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) and the [custom renderer section of the guide](../custom_renderer/index.md)
-- [RSX](https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX): The core parsing for RSX used for hot reloading, autoformatting, and the macro
-- [core-macro](https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro): The rsx! macro used to write Dioxus applications. (This is a wrapper over the RSX crate)
-- [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro): A html-like alternative to the RSX macro
+- [core](https://github.com/DioxusLabs/dioxus/tree/main/packages/core): 每个 Dioxus 应用程序使用的核心虚拟 DOM 实现。
+  - 您可以在 [in this blog post](https://dioxuslabs.com/blog/templates-diffing/) 中了解有关核心架构的更多信息，以及 [custom renderer section of the guide](../custom_renderer/index.md)。
+- [RSX](https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX): 用于热重载、自动格式化和宏的 RSX 核心解析器。
+- [core-macro](https://github.com/DioxusLabs/dioxus/tree/main/packages/core-macro): 用于编写 Dioxus 应用程序的 rsx! 宏。（它是 RSX crate 的包装器）
+- [HTML macro](https://github.com/DioxusLabs/dioxus-html-macro):  RSX 宏的 HTML 类替代方案。
 
-## Native Renderer Utilities
+## 原生渲染器工具
 
-- [native-core](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core): Incrementally computed tree of states (mostly styles)
-  - You can read more about how native-core can help you build native renderers in the [custom renderer section of the guide](../custom_renderer/index.html#native-core)
-- [native-core-macro](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro): A helper macro for native core
-- [Taffy](https://github.com/DioxusLabs/taffy): Layout engine powering Blitz-Core, Plasmo, and Bevy UI
+- [native-core](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core): 递增计算的状态树（主要是样式）
+  - 您可以在 [custom renderer section of the guide](../custom_renderer/index.html#native-core) 中了解有关原生核心如何帮助您构建原生渲染器的更多信息。
+- [native-core-macro](https://github.com/DioxusLabs/blitz/tree/main/packages/native-core-macro):  原生核心的辅助宏。
+- [Taffy](https://github.com/DioxusLabs/taffy): 支持 Blitz-Core、Plasmo 和 Bevy UI 的布局引擎。
 
-## Web renderer tooling
+## Web 渲染器工具
 
-- [HTML](https://github.com/DioxusLabs/dioxus/tree/main/packages/html): defines html specific elements, events, and attributes
-- [Interpreter](https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter): defines browser bindings used by the web and desktop renderers
+- [HTML](https://github.com/DioxusLabs/dioxus/tree/main/packages/html):  定义了 HTML 特定的元素、事件和属性。
+- [Interpreter](https://github.com/DioxusLabs/dioxus/tree/main/packages/interpreter):  定义了 Web 和桌面渲染器使用的浏览器绑定。
 
-## Developer tooling
+## 开发者工具
 
-- [hot-reload](https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload): Macro that uses the RSX crate to hot reload static parts of any rsx! macro. This macro works with any non-web renderer with an [integration](https://crates.io/crates/dioxus-hot-reload)
-- [autofmt](https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt): Formats RSX code
-- [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX-rosetta): Handles conversion between HTML and RSX
-- [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli): A Command Line Interface and VSCode extension to assist with Dioxus usage
+- [hot-reload](https://github.com/DioxusLabs/dioxus/tree/main/packages/hot-reload):  一个使用 RSX crate 来热重载任何 rsx! 宏的静态部分的宏。此宏适用于具有 [integration](https://crates.io/crates/dioxus-hot-reload) 的任何非 Web 渲染器。
+- [autofmt](https://github.com/DioxusLabs/dioxus/tree/main/packages/autofmt):  格式化 RSX 代码。
+- [rsx-rosetta](https://github.com/DioxusLabs/dioxus/tree/main/packages/RSX-rosetta):  处理 HTML 和 RSX 之间的转换。
+- [CLI](https://github.com/DioxusLabs/dioxus/tree/main/packages/cli):  一个命令行界面和 VSCode 扩展，用于辅助 Dioxus 使用。

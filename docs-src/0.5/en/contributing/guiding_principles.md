@@ -1,37 +1,37 @@
-# Overall Goals
+# 整体目标
 
-This document outlines some of the overall goals for Dioxus. These goals are not set in stone, but they represent general guidelines for the project.
+本文档概述了 Dioxus 的一些总体目标。这些目标并非一成不变，但它们代表了该项目的总体指南。
 
-The goal of Dioxus is to make it easy to build **cross-platform applications that scale**.
+Dioxus 的目标是简化构建**可扩展的跨平台应用程序**。
 
-## Cross-Platform
+## 跨平台
 
-Dioxus is designed to be cross-platform by default. This means that it should be easy to build applications that run on the web, desktop, and mobile. However, Dioxus should also be flexible enough to allow users to opt into platform-specific features when needed. The `use_eval` is one example of this. By default, Dioxus does not assume that the platform supports JavaScript, but it does provide a hook that allows users to opt into JavaScript when needed.
+Dioxus 默认设计为跨平台。这意味着它应该易于构建在 Web、桌面和移动设备上运行的应用程序。但是，Dioxus 也应该足够灵活，允许用户在需要时选择平台特定功能。`use_eval` 就是一个例子。默认情况下，Dioxus 不会假设平台支持 JavaScript，但它提供了一个钩子，允许用户在需要时选择 JavaScript。
 
-## Performance
+## 性能
 
-As Dioxus applications grow, they should remain relatively performant without the need for manual optimizations. There will be cases where manual optimizations are needed, but Dioxus should try to make these cases as rare as possible.
+随着 Dioxus 应用程序的增长，它们应该保持相对良好的性能，而无需手动优化。在某些情况下，需要手动优化，但 Dioxus 应该尽量减少这些情况。
 
-One of the benefits of the core architecture of Dioxus is that it delivers reasonable performance even when components are rerendered often. It is based on a Virtual Dom which performs diffing which should prevent unnecessary re-renders even when large parts of the component tree are rerun. On top of this, Dioxus groups static parts of the RSX tree together to skip diffing them entirely.
+Dioxus 核心架构的优势之一是，即使组件经常重新渲染，它也能提供合理的性能。它基于一个虚拟 DOM，执行差异比较，即使组件树的大部分被重新运行，也能防止不必要的重新渲染。在此基础上，Dioxus 将 RSX 树的静态部分分组在一起，以完全跳过对它们的差异比较。
 
-## Type Safety
+## 类型安全
 
-As teams grow, the Type safety of Rust is a huge advantage. Dioxus should leverage this advantage to make it easy to build applications with large teams.
+随着团队的壮大，Rust 的类型安全是一个巨大的优势。Dioxus 应该利用这种优势，简化与大型团队合作构建应用程序的过程。
 
-To take full advantage of Rust's type system, Dioxus should try to avoid exposing public `Any` types and string-ly typed APIs where possible.
+为了充分利用 Rust 的类型系统，Dioxus 应该尽量避免暴露公共的 `Any` 类型，并在可能的情况下避免使用字符串类型的 API。
 
-## Developer Experience
+## 开发人员体验
 
-Dioxus should be easy to learn and ergonomic to use.
+Dioxus 应该易于学习，使用起来符合人体工程学。
 
-- The API of Dioxus attempts to remain close to React's API where possible. This makes it easier for people to learn Dioxus if they already know React
+- Dioxus 的 API 尽可能接近 React 的 API。这使得已经熟悉 React 的人更容易学习 Dioxus。
 
-- We can avoid the tradeoff between simplicity and flexibility by providing multiple layers of API: One for the very common use case, one for low-level control
+- 我们可以通过提供多层 API 来避免简单性和灵活性的权衡：一个用于非常常见的用例，一个用于低级控制
 
-  - Hooks: the hooks crate has the most common use cases, but `use_hook` provides a way to access the underlying persistent value if needed.
-  - The builder pattern in platform Configs: The builder pattern is used to default to the most common use case, but users can change the defaults if needed.
+  - 钩子：钩子 crate 包含最常见的用例，但 `use_hook` 提供了一种在需要时访问底层持久值的方法。
+  - 平台配置中的构建器模式：构建器模式用于默认使用最常见的用例，但用户可以在需要时更改默认值。
 
-- Documentation:
-  - All public APIs should have rust documentation
-  - Examples should be provided for all public features. These examples both serve as documentation and testing. They are checked by CI to ensure that they continue to compile
-  - The most common workflows should be documented in the guide
+- 文档：
+  - 所有公共 API 应该具有 Rust 文档
+  - 应该为所有公共功能提供示例。这些示例既用作文档，也用作测试。它们由 CI 检查以确保它们能够继续编译。
+  - 最常见的流程应该在指南中进行文档说明。

@@ -1,73 +1,29 @@
-# Sharing State
+# 共享状态
 
-Often, multiple components need to access the same state. Depending on your needs, there are several ways to implement this.
+通常情况下，多个组件需要访问同一个状态。根据您的需求，有几种方法可以实现这一点。
 
-## Lifting State
+## 状态提升
 
-One approach to share state between components is to "lift" it up to the nearest common ancestor. This means putting the `use_signal` hook in a parent component, and passing the needed values down as props.
+在组件之间共享状态的一种方法是将状态“提升”到最近的共同祖先。这意味着在父组件中放置 `use_signal` 钩子，并将所需的值作为道具传递下去。
 
-Suppose we want to build a meme editor. We want to have an input to edit the meme caption, but also a preview of the meme with the caption. Logically, the meme and the input are 2 separate components, but they need access to the same state (the current caption).
+假设我们要构建一个表情包编辑器。我们希望有一个输入框来编辑表情包的标题，还要有一个显示带有标题的表情包的预览。从逻辑上讲，表情包和输入框是两个独立的组件，但它们需要访问同一个状态（当前标题）。
 
-> Of course, in this simple example, we could write everything in one component – but it is better to split everything out in smaller components to make the code more reusable, maintainable, and performant (this is even more important for larger, complex apps).
+> 当然，在这个简单的例子中，我们可以在一个组件中编写所有内容，但将所有内容拆分成更小的组件会更好，这样代码会更可重用、更易于维护且性能更高（这对大型、复杂的应用程序来说更为重要）。
 
-We start with a `Meme` component, responsible for rendering a meme with a given caption:
+我们从一个 `Meme` 组件开始，它负责渲染带有给定标题的表情包：
 
 ```rust, no_run
 {{#include src/doc_examples/meme_editor.rs:meme_component}}
-```
-
-> Note that the `Meme` component is unaware where the caption is coming from – it could be stored in `use_signal`, or a constant. This ensures that it is very reusable – the same component can be used for a meme gallery without any changes!
-
-We also create a caption editor, completely decoupled from the meme. The caption editor must not store the caption itself – otherwise, how will we provide it to the `Meme` component? Instead, it should accept the current caption as a prop, as well as an event handler to delegate input events to:
-
-```rust, no_run
+[[[CODE_BLOCK_2d6646ed-4b14-4f56-9c1f-4ad91f041f70]]]rust, no_run
 {{#include src/doc_examples/meme_editor.rs:caption_editor}}
-```
-
-Finally, a third component will render the other two as children. It will be responsible for keeping the state and passing down the relevant props.
-
-```rust, no_run
+[[[CODE_BLOCK_a084d20f-665c-4ffb-80e3-3a9094b2c3a0]]]rust, no_run
 {{#include src/doc_examples/meme_editor.rs:meme_editor}}
-```
-
-![Meme Editor Screenshot: An old plastic skeleton sitting on a park bench. Caption: "me waiting for a language feature"](public/static/meme_editor_screenshot.png)
-
-## Using Shared State
-
-Sometimes, some state needs to be shared between multiple components far down the tree, and passing it down through props is very inconvenient.
-
-Suppose now that we want to implement a dark mode toggle for our app. To achieve this, we will make every component select styling depending on whether dark mode is enabled or not.
-
-> Note: we're choosing this approach for the sake of an example. There are better ways to implement dark mode (e.g. using CSS variables). Let's pretend CSS variables don't exist – welcome to 2013!
-
-Now, we could write another `use_signal` in the top component, and pass `is_dark_mode` down to every component through props. But think about what will happen as the app grows in complexity – almost every component that renders any CSS is going to need to know if dark mode is enabled or not – so they'll all need the same dark mode prop. And every parent component will need to pass it down to them. Imagine how messy and verbose that would get, especially if we had components several levels deep!
-
-Dioxus offers a better solution than this "prop drilling" – providing context. The [`use_context_provider`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context_provider.html) hook provides any Clone context (including Signals!) to any child components. Child components can use the [`use_context`](https://docs.rs/dioxus-hooks/latest/dioxus_hooks/fn.use_context.html) hook to get that context and if it is a Signal, they can read and write to it.
-
-First, we have to create a struct for our dark mode configuration:
-
-```rust, no_run
+[[[CODE_BLOCK_5379f01b-94ce-4663-ae18-b037d821e962]]]rust, no_run
 {{#include src/doc_examples/meme_editor_dark_mode.rs:DarkMode_struct}}
-```
-
-Now, in a top-level component (like `App`), we can provide the `DarkMode` context to all children components:
-
-```rust, no_run
+[[[CODE_BLOCK_3cfceaf1-ed7c-4bb8-bc56-e1ab5e70e215]]]rust, no_run
 {{#include src/doc_examples/meme_editor_dark_mode.rs:context_provider}}
-```
-
-As a result, any child component of `App` (direct or not), can access the `DarkMode` context.
-
-```rust, no_run
+[[[CODE_BLOCK_ef9ccbc0-36b9-4b09-84e0-6e88c766c6a8]]]rust, no_run
 {{#include src/doc_examples/meme_editor_dark_mode.rs:use_context}}
-```
-
-> `use_context` returns `Signal<DarkMode>` here, because the Signal was provided by the parent. If the context hadn't been provided `use_context` would have panicked.
-
-If you have a component where the context might or not be provided, you might want to use `try_consume_context`instead, so you can handle the `None` case. The drawback of this method is that it will not memoize the value between renders, so it won't be as as efficient as `use_context`, you could do it yourself with `use_hook` though.
-
-For example, here's how we would implement the dark mode toggle, which both reads the context (to determine what color it should render) and writes to it (to toggle dark mode):
-
-```rust, no_run
+[[[CODE_BLOCK_52c81f7e-bd6c-4a81-8218-7cb22c2d21e2]]]rust, no_run
 {{#include src/doc_examples/meme_editor_dark_mode.rs:toggle}}
 ```

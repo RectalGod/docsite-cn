@@ -1,43 +1,43 @@
-# Desktop
+# 桌面
 
-This guide will cover concepts specific to the Dioxus desktop renderer.
+本指南将涵盖 Dioxus 桌面渲染器特有的概念。
 
-Apps built with Dioxus desktop use the system WebView to render the page. This makes the final size of application much smaller than other WebView renderers (typically under 5MB).
+使用 Dioxus 桌面构建的应用程序使用系统 WebView 渲染页面。这使得应用程序的最终大小远小于其他 WebView 渲染器（通常小于 5MB）。
 
-Although desktop apps are rendered in a WebView, your Rust code runs natively. This means that browser APIs are _not_ available, so rendering WebGL, Canvas, etc is not as easy as the Web. However, native system APIs _are_ accessible, so streaming, WebSockets, filesystem, etc are all easily accessible though system APIs.
+虽然桌面应用程序是在 WebView 中渲染的，但您的 Rust 代码是本地运行的。这意味着浏览器 API _不可用_，因此渲染 WebGL、Canvas 等不像 Web 那样容易。但是，本地系统 API _可用_，因此流、WebSocket、文件系统等都可以通过系统 API 很容易地访问。
 
-Dioxus desktop is built off [Tauri](https://tauri.app/). Right now there are limited Dioxus abstractions over the menubar, event handling, etc. In some places you may need to leverage Tauri directly – through [Wry](http://github.com/tauri-apps/wry/) and [Tao](http://github.com/tauri-apps/tao).
+Dioxus 桌面是基于 [Tauri](https://tauri.app/) 构建的。目前，对菜单栏、事件处理等方面的 Dioxus 抽象有限。在某些情况下，您可能需要直接利用 Tauri - 通过 [Wry](http://github.com/tauri-apps/wry/) 和 [Tao](http://github.com/tauri-apps/tao)。
 
-> In the future, we plan to move to a custom web renderer-based DOM renderer with WGPU integrations ([Blitz](https://github.com/DioxusLabs/blitz)).
+> 将来，我们计划迁移到基于自定义 Web 渲染器的 DOM 渲染器，并集成 WGPU ([Blitz](https://github.com/DioxusLabs/blitz))。
 
-## Examples
+## 示例
 
 - [File Explorer](https://github.com/DioxusLabs/dioxus/blob/main/examples/file_explorer.rs)
-- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+- [Tailwind App](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
 
-[![Tailwind App screenshot](./public/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/main/examples/tailwind)
+[![Tailwind App screenshot](./public/static/tailwind_desktop_app.png)](https://github.com/DioxusLabs/dioxus/tree/v0.5/examples/tailwind)
 
-## Running Javascript
+## 运行 Javascript
 
-Dioxus provides some ergonomic wrappers over the browser API, but in some cases you may need to access parts of the browser API Dioxus does not expose. 
+Dioxus 提供了一些对浏览器 API 的便捷包装器，但在某些情况下，您可能需要访问 Dioxus 未公开的浏览器 API 部分。
 
 
-For these cases, Dioxus desktop exposes the use_eval hook that allows you to run raw Javascript in the webview:
+对于这些情况，Dioxus 桌面公开了 use_eval hook，它允许您在 webview 中运行原始 Javascript：
 
 ```rust
 {{#include src/doc_examples/eval.rs}}
 ```
 
-## Custom Assets
+## 自定义资产
 
-You can link to local assets in dioxus desktop instead of using a url:
+您可以在 dioxus 桌面中链接到本地资产，而不是使用 URL：
 
 ```rust
 {{#include src/doc_examples/custom_assets.rs}}
 ```
 
-You can read more about assets in the [assets](./assets.md) reference.
+您可以在 [assets](./assets.md) 参考中详细了解资产。
 
-## Integrating with Wry
+## 与 Wry 集成
 
-In cases where you need more low level control over your window, you can use wry APIs exposed through the [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) and the [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html)
+在您需要对窗口进行更低级控制的情况下，您可以使用通过 [Desktop Config](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/struct.Config.html) 和 [use_window hook](https://docs.rs/dioxus-desktop/0.5.0/dioxus_desktop/fn.use_window.html) 公开的 wry API。

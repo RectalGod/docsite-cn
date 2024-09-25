@@ -1,13 +1,13 @@
-# Introduction
+# 简介
 
-The ✨**Dioxus CLI**✨ is a tool to get Dioxus projects off the ground.
+✨**Dioxus CLI**✨ 是一个用于快速启动 Dioxus 项目的工具。
 
-There's no documentation for commands here, but you can see all commands using `dx --help` once you've installed the CLI! Furthermore, you can run `dx <command> --help` to get help with a specific command.
+这里没有命令文档，但你可以在安装 CLI 后使用 `dx --help` 查看所有命令！此外，你可以运行 `dx <command> --help` 获取特定命令的帮助。
 
-## Features
+## 功能
 
-* Build and pack a Dioxus project.
-* Format `rsx` code.
-* Hot Reload.
-* Create a Dioxus project from a template repository.
-* And more!
+* 构建和打包 Dioxus 项目。
+* 格式化 `rsx` 代码。
+* 热重载。
+* 从模板仓库创建 Dioxus 项目。
+* 以及更多！
